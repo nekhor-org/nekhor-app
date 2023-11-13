@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Home from "./views/Home";
+import Favorites from "./views/Favorites";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
           headerShown: false,
         }}
       >
+        <Stack.Screen name="Favorites" component={Favorites} />
         <Stack.Screen name="Home" component={Home} />
       </Stack.Navigator>
     </NavigationContainer>

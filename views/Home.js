@@ -36,6 +36,7 @@ export default function Home() {
                       flexDirection: "row",
                       justifyContent: "space-between",
                       alignItems: "center",
+                      marginTop: 12,
                     }}
                   >
                     <Text style={{ fontSize: 32 }}>{item.name}</Text>
