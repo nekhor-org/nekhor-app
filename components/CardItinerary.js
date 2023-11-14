@@ -12,41 +12,25 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 const { width } = Dimensions.get("screen");
 
-export default function CardPost({
-  title,
-  image,
-  id,
-  description,
-  kind = null,
-}) {
+export default function CardItinerary({ name, id, image, description }) {
   return (
     <>
-      <View style={styles.containerCard}>
-        <Image source={{ uri: image }} style={styles.image} />
-        <LinearGradient
-          colors={["rgba(0, 0, 0, 0.00)", "#000"]}
-          style={styles.gradient}
-        ></LinearGradient>
-        {kind && (
-          <View style={styles.absoluteContainer}>
-            <Image
-              source={
-                kind == "heart"
-                  ? require(`../assets/heart_active.svg`)
-                  : require(`../assets/map_active.svg`)
-              }
-              style={styles.menu}
-            />
-          </View>
-        )}
-      </View>
       <View style={styles.textContainer}>
-        <Text style={{ color: "#717171", fontSize: 12, fontWeight: 400 }}>
-          {description}
-        </Text>
-        <Text style={{ color: "#A67C00", fontSize: 22, fontWeight: 400 }}>
-          {title}
-        </Text>
+        <Image source={{ uri: image }} style={styles.image} />
+        <View style={{ marginLeft: 12, width: "70%" }}>
+          <Text
+            numberOfLines={4}
+            style={{ color: "black", fontSize: 18, fontWeight: 700 }}
+          >
+            {name}
+          </Text>
+          <Text
+            numberOfLines={4}
+            style={{ color: "#A67C00", fontSize: 14, fontWeight: 400 }}
+          >
+            {description}
+          </Text>
+        </View>
       </View>
     </>
   );
@@ -69,8 +53,8 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   image: {
-    height: 200,
-    width: "100%",
+    height: 130,
+    width: "40%",
     borderRadius: 8,
   },
 
@@ -95,5 +79,8 @@ const styles = StyleSheet.create({
     color: "#000",
     bottom: 0,
     padding: 16,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });

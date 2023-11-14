@@ -191,3 +191,116 @@ export const Categories = [
     ],
   },
 ];
+
+export const Itineraries = [
+  {
+    id: 1,
+    name: "Itinerary example #21",
+  },
+  {
+    id: 2,
+    name: "Other itinerary example #1",
+  },
+];
+
+export const PostsData = [
+  {
+    id: 1,
+    image:
+      "https://images.squarespace-cdn.com/content/v1/5b735348266c075124b0ffb3/1613003896214-84327QJKCMI3ZJKKSMHY/shutterstock_1461171485.jpg?format=2500w",
+    title: "Sites of the Guru: Kathmandu Valley and Pharping",
+    description: "A SACRED URBAN LANDSCAPE",
+  },
+  {
+    id: 2,
+    image:
+      "https://images.squarespace-cdn.com/content/v1/5b735348266c075124b0ffb3/1613008648899-EQ3VYDAK78GGYQCU0FSA/430399324-huge.jpg?format=2500w",
+    title: "Sites of the Guru: Kathmandu Valley and Pharping",
+    description: "A SACRED URBAN LANDSCAPE",
+  },
+  {
+    id: 2,
+    image:
+      "https://images.squarespace-cdn.com/content/v1/5b735348266c075124b0ffb3/1613003896214-84327QJKCMI3ZJKKSMHY/shutterstock_1461171485.jpg?format=2500w",
+    title: "Sites of the Guru: Kathmandu Valley and Pharping",
+    description: "A SACRED URBAN LANDSCAPE",
+  },
+  {
+    id: 3,
+    image:
+      "https://images.squarespace-cdn.com/content/v1/5b735348266c075124b0ffb3/1613008648899-EQ3VYDAK78GGYQCU0FSA/430399324-huge.jpg?format=2500w",
+    title: "Sites of the Guru: Kathmandu Valley and Pharping",
+    description: "A SACRED URBAN LANDSCAPE",
+  },
+];
+
+export const Countries = [
+  {
+    id: 1,
+    name: "Nepal",
+    posts: [
+      {
+        id: 1,
+        image:
+          "https://images.squarespace-cdn.com/content/v1/5b735348266c075124b0ffb3/1613003896214-84327QJKCMI3ZJKKSMHY/shutterstock_1461171485.jpg?format=2500w",
+        title: "BODH GAYA",
+        description: "Guru",
+      },
+      {
+        id: 2,
+        image:
+          "https://images.squarespace-cdn.com/content/v1/5b735348266c075124b0ffb3/1613008648899-EQ3VYDAK78GGYQCU0FSA/430399324-huge.jpg?format=2500w",
+        title: "SARNATH",
+        description: "Guru",
+      },
+      {
+        id: 2,
+        image:
+          "https://images.squarespace-cdn.com/content/v1/5b735348266c075124b0ffb3/1613003896214-84327QJKCMI3ZJKKSMHY/shutterstock_1461171485.jpg?format=2500w",
+        title: "BODH GAYA",
+        description: "Guru",
+      },
+      {
+        id: 3,
+        image:
+          "https://images.squarespace-cdn.com/content/v1/5b735348266c075124b0ffb3/1613008648899-EQ3VYDAK78GGYQCU0FSA/430399324-huge.jpg?format=2500w",
+        title: "SARNATH",
+        description: "Guru",
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: "India",
+    posts: [
+      {
+        id: 1,
+        image:
+          "https://images.squarespace-cdn.com/content/v1/5b735348266c075124b0ffb3/1613003896214-84327QJKCMI3ZJKKSMHY/shutterstock_1461171485.jpg?format=2500w",
+        title: "BODH GAYA",
+        description: "The Buddha",
+      },
+      {
+        id: 2,
+        image:
+          "https://images.squarespace-cdn.com/content/v1/5b735348266c075124b0ffb3/1613008648899-EQ3VYDAK78GGYQCU0FSA/430399324-huge.jpg?format=2500w",
+        title: "SARNATH",
+        description: "The Buddha",
+      },
+      {
+        id: 2,
+        image:
+          "https://images.squarespace-cdn.com/content/v1/5b735348266c075124b0ffb3/1613003896214-84327QJKCMI3ZJKKSMHY/shutterstock_1461171485.jpg?format=2500w",
+        title: "BODH GAYA",
+        description: "The Buddha",
+      },
+      {
+        id: 3,
+        image:
+          "https://images.squarespace-cdn.com/content/v1/5b735348266c075124b0ffb3/1613008648899-EQ3VYDAK78GGYQCU0FSA/430399324-huge.jpg?format=2500w",
+        title: "SARNATH",
+        description: "The Buddha",
+      },
+    ],
+  },
+];

@@ -23,25 +23,31 @@ export default function Footer({ active = "explore" }) {
         style={active == "explore" ? styles.menuItemActive : styles.menuItem}
       >
         <Image
-          source={require(`../assets/${
-            active == "explore" ? "explore_active.svg" : "explore.svg"
-          }`)}
+          source={
+            active == "explore"
+              ? require(`../assets/explore_active.svg`)
+              : require(`../assets/explore.svg`)
+          }
           style={styles.menu}
         />
       </View>
       <View style={active == "heart" ? styles.menuItemActive : styles.menuItem}>
         <Image
-          source={require(`../assets/${
-            active == "heart" ? "heart_active.svg" : "heart.svg"
-          }`)}
+          source={
+            active == "heart"
+              ? require(`../assets/heart_active.svg`)
+              : require(`../assets/heart.svg`)
+          }
           style={styles.menu}
         />
       </View>
       <View style={active == "map" ? styles.menuItemActive : styles.menuItem}>
         <Image
-          source={require(`../assets/${
-            active == "map" ? "map_active.svg" : "map.svg"
-          }`)}
+          source={
+            active == "map"
+              ? require(`../assets/map_active.svg`)
+              : require(`../assets/map.svg`)
+          }
           style={styles.menu}
         />
       </View>
@@ -49,9 +55,11 @@ export default function Footer({ active = "explore" }) {
         style={active == "location" ? styles.menuItemActive : styles.menuItem}
       >
         <Image
-          source={require(`../assets/${
-            active == "location" ? "location_active.svg" : "location.svg"
-          }`)}
+          source={
+            active == "location"
+              ? require(`../assets/location_active.svg`)
+              : require(`../assets/location.svg`)
+          }
           style={styles.menu}
         />
       </View>

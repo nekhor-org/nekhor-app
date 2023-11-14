@@ -12,41 +12,17 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 const { width } = Dimensions.get("screen");
 
-export default function CardPost({
-  title,
-  image,
-  id,
-  description,
-  kind = null,
-}) {
+export default function ListItinerary({ name, id }) {
   return (
     <>
-      <View style={styles.containerCard}>
-        <Image source={{ uri: image }} style={styles.image} />
-        <LinearGradient
-          colors={["rgba(0, 0, 0, 0.00)", "#000"]}
-          style={styles.gradient}
-        ></LinearGradient>
-        {kind && (
-          <View style={styles.absoluteContainer}>
-            <Image
-              source={
-                kind == "heart"
-                  ? require(`../assets/heart_active.svg`)
-                  : require(`../assets/map_active.svg`)
-              }
-              style={styles.menu}
-            />
-          </View>
-        )}
-      </View>
       <View style={styles.textContainer}>
-        <Text style={{ color: "#717171", fontSize: 12, fontWeight: 400 }}>
-          {description}
+        <Text style={{ color: "#A67C00", fontSize: 16, fontWeight: 700 }}>
+          {name}
         </Text>
-        <Text style={{ color: "#A67C00", fontSize: 22, fontWeight: 400 }}>
-          {title}
-        </Text>
+        <Image
+          source={require(`../assets/arrow_left.svg`)}
+          style={styles.menu}
+        />
       </View>
     </>
   );
@@ -95,5 +71,8 @@ const styles = StyleSheet.create({
     color: "#000",
     bottom: 0,
     padding: 16,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });

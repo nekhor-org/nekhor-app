@@ -29,6 +29,7 @@ export default function Favorites() {
               return (
                 <View style={{}}>
                   <CardPost
+                    kind="heart"
                     title={item.title}
                     description={item.description}
                     image={item.poster}
@@ -39,7 +40,7 @@ export default function Favorites() {
           />
         </View>
       </ScrollView>
-      <Footer />
+      <Footer active="heart" />
     </View>
   );
 }

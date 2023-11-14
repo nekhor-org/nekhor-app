@@ -5,6 +5,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Home from "./views/Home";
 import Favorites from "./views/Favorites";
+import Visiteds from "./views/Visiteds";
+import Itinerary from "./views/Itinerary";
+import Posts from "./views/Posts";
+import PostDetail from "./views/PostDetail";
+import ItineraryDetail from "./views/ItineraryDetail";
+import CreateItinerary from "./views/CreateItinerary";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -15,6 +21,12 @@ export default function App() {
           headerShown: false,
         }}
       >
+        <Stack.Screen name="CreateItinerary" component={CreateItinerary} />
+        <Stack.Screen name="ItineraryDetail" component={ItineraryDetail} />
+        <Stack.Screen name="PostDetail" component={PostDetail} />
+        <Stack.Screen name="Posts" component={Posts} />
+        <Stack.Screen name="Itinerary" component={Itinerary} />
+        <Stack.Screen name="Visiteds" component={Visiteds} />
         <Stack.Screen name="Favorites" component={Favorites} />
         <Stack.Screen name="Home" component={Home} />
       </Stack.Navigator>
