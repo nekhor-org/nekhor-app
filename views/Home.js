@@ -8,8 +8,10 @@ import CardHome from "../components/CardHome";
 import { Categories } from "../utils";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-export default function Home() {
+
+export default function Home({ navigation }) {
   const [categoriesData, setCategoriesData] = useState(Categories);
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
@@ -71,6 +73,7 @@ export default function Home() {
                             renderItem={({ item, index }) => {
                               return (
                                 <CardHome
+                                  navigation={navigation}
                                   title={item.title}
                                   image={item.image}
                                   id={item.id}

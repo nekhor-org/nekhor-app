@@ -12,7 +12,7 @@ import HeaderBack from "../components/HeaderBack";
 import WebView from "react-native-webview";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FooterPost from "../components/FooterPost";
-export default function PostDetail() {
+export default function PostDetail({ navigation }) {
   const [content, setContent] = useState(
     "<p>Buddhist pilgrimage is as ancient as Buddhism itself. Indeed, it was Buddha Shakyamuni who made the first such pilgrimage, revealing to us the importance of visiting sacred sites. The Ghatikara Sutra, for instance, tells a story in which the Buddha was delighted upon arriving at a site where the previous Buddha Kashyapa had been before him. The location itself evoked a potent recollection for Buddha Shakyamuni of the previous Buddha Kashyapa’s presence there. The Buddha’s main disciples beseeched the Buddha to take a seat; they wanted him to impress the site with his own bodily presence, just as Kashyapa had done before. This episode teaches us that sacred sites themselves have power and can trigger rich experiences that aid us along the spiritual path. It also teaches us that a buddha’s appearance at a particular site imbues it with a specific power, or flow of blessings, a lasting imprint, a mark of the sacred.</p>"
   );
@@ -20,7 +20,7 @@ export default function PostDetail() {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView>
-        <HeaderBack name="The Buddha" />
+        <HeaderBack name="The Buddha" onBack={() => navigation.goBack()} />
         <View>
           <Image
             position="top"

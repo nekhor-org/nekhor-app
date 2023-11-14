@@ -15,7 +15,7 @@ export default function ItineraryDetail() {
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
-        <HeaderBack name="Itinerary example #21..." />
+        <HeaderBack name="Itinerary example #21..." hasMenu />
         <View>
           <FlatList
             data={itineraries}

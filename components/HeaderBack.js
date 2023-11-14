@@ -1,3 +1,4 @@
+import { useActionSheet } from "@expo/react-native-action-sheet";
 import * as React from "react";
 import {
   StatusBar,
@@ -10,9 +11,34 @@ import {
   StyleSheet,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-const { width } = Dimensions.get("screen");
+import { MaterialIcons, Entypo } from "@expo/vector-icons";
 
-export default function HeaderBack({ name }) {
+const { width } = Dimensions.get("screen");
+const icon = (name) => <MaterialIcons key={name} name={name} size={24} />;
+
+export default function HeaderBack({ name, hasMenu, onBack }) {
+  const { showActionSheetWithOptions } = useActionSheet();
+
+  const openSettings = () => {
+    const options = ["Re-order", "Edit", "Delete"];
+    const icons = [icon("reorder"), icon("edit"), icon("delete")];
+    showActionSheetWithOptions(
+      {
+        options,
+        icons: icons,
+        title: "Settings",
+        titleTextStyle: { color: "black", fontSize: 24, fontWeight: 700 },
+      },
+      (selectedIndex) => {
+        console.log(selectedIndex);
+      }
+    );
+  };
+
+  const backAction = () => {
+    onBack ? onBack() : false;
+  };
+
   return (
     <View style={styles.containerHeader}>
       <View
@@ -25,20 +51,40 @@ export default function HeaderBack({ name }) {
         }}
       >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Image
-            source={require(`../assets/arrow_back.png`)}
-            style={styles.menu}
-          />
-          <Text style={{ fontSize: 32, marginLeft: 12, fontWeight: "700" }}>
+          <TouchableOpacity onPress={backAction}>
+            <Image
+              source={require(`../assets/arrow_back.png`)}
+              style={styles.menu}
+            />
+          </TouchableOpacity>
+          <Text
+            style={{
+              fontSize: 32,
+              marginLeft: 12,
+              fontWeight: "700",
+              width: hasMenu ? "70%" : "100%",
+            }}
+            numberOfLines={1}
+          >
             {name}
           </Text>
+          {hasMenu && (
+            <TouchableOpacity
+              style={{
+                color: "#A67C00",
+                fontSize: 14,
+                justifyContent: "flex-end",
+                width: "10%",
+              }}
+              onPress={openSettings}
+            >
+              <Image
+                source={require(`../assets/menu_points.png`)}
+                style={styles.menu}
+              />
+            </TouchableOpacity>
+          )}
         </View>
-        {/* <TouchableOpacity
-          style={{ color: "#A67C00", fontSize: 14, justifyContent: "flex-end" }}
-          onPress={() => console.log(`VER TODOS ${item.id}`)}
-        >
-          Remove All
-        </TouchableOpacity> */}
       </View>
     </View>
   );

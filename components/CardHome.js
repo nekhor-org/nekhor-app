@@ -10,11 +10,15 @@ import {
   StyleSheet,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { TouchableOpacity } from "react-native-gesture-handler";
 const { width } = Dimensions.get("screen");
 
-export default function CardHome({ title, image, id }) {
+export default function CardHome({ title, image, id, navigation }) {
   return (
-    <View style={styles.containerCard}>
+    <TouchableOpacity
+      style={styles.containerCard}
+      onPress={() => navigation.navigate("PostDetail", { id: id })}
+    >
       <Image source={{ uri: image }} style={styles.image} />
       <LinearGradient
         colors={["rgba(0, 0, 0, 0.00)", "#000"]}
@@ -25,7 +29,7 @@ export default function CardHome({ title, image, id }) {
           {title}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
