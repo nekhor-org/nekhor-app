@@ -12,18 +12,23 @@ import {
 const { width } = Dimensions.get("screen");
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { getMenus } from "../api";
 
-export default function Header({ title, image, id }) {
+export default function Header({ title, image, id, navigation }) {
   const { showActionSheetWithOptions } = useActionSheet();
+  const [menus, setMenus] = React.useState([]);
+
+  const getMenuData = async () => {
+    const response = await getMenus();
+    setMenus(response.data);
+  };
+  React.useEffect(() => {
+    getMenuData();
+  }, []);
+
   const openMenu = () => {
-    const options = [
-      "Introduction",
-      "The Buddha",
-      "The Guru",
-      "Suggested Pilgrimage Itineraries",
-      "Publications",
-      "News",
-    ];
+    console.log(menus);
+    const options = menus.map((item) => item.name);
 
     showActionSheetWithOptions(
       {
@@ -32,7 +37,12 @@ export default function Header({ title, image, id }) {
         titleTextStyle: { color: "black", fontSize: 24, fontWeight: 700 },
       },
       (selectedIndex) => {
-        console.log(selectedIndex);
+        console.log(menus[selectedIndex]);
+        navigation.push("Posts", {
+          id: menus[selectedIndex].local_id,
+          name: menus[selectedIndex].name,
+        });
+        console.log(menus[selectedIndex]);
       }
     );
   };

@@ -9,21 +9,38 @@ import Footer from "../components/Footer";
 import HeaderApp from "../components/HeaderApp";
 import CardPost from "../components/CardPost";
 import HeaderBack from "../components/HeaderBack";
-export default function Posts() {
+import { getSubCategories, getPosts } from "../api";
+export default function Posts({ navigation, route }) {
+  const [categoryId, setCategoryId] = useState(route?.params?.id || 1);
+  const [name, setName] = useState(route?.params?.name || "The Buddha");
   const [selected, setSelected] = useState(null);
-  const [postsData, setPostsData] = useState(PostsData);
-  const [countries, setCountries] = useState([
-    { id: 1, name: "Nepal" },
-    { id: 2, name: "India" },
-  ]);
+  const [postsData, setPostsData] = useState([]);
+  const [countries, setCountries] = useState([]);
+
+  const getCountryData = async () => {
+    const response = await getSubCategories(`q[local_id_eq]=${categoryId}`);
+    setCountries(response.data);
+    setSelected(response.data[0]);
+    getPostsData(response.data[0].country?.id);
+  };
+
+  const getPostsData = async (country_id) => {
+    const response = await getPosts(`q[country_id_eq]=${country_id}`);
+    setPostsData(response.data);
+  };
+
+  const selectCountry = async (select) => {
+    getPostsData(select?.country?.id);
+    setSelected(select);
+  };
 
   useEffect(() => {
-    setSelected(countries[0]);
+    getCountryData();
   }, []);
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
-        <HeaderBack name="The Buddha" />
+        <HeaderBack name={name} onBack={() => navigation.goBack()} />
         <View>
           <FlatList
             data={countries}
@@ -39,7 +56,7 @@ export default function Posts() {
               return (
                 <TouchableOpacity
                   style={{ marginHorizontal: 12 }}
-                  onPress={() => setSelected(item)}
+                  onPress={() => selectCountry(item)}
                 >
                   <Text
                     style={{
@@ -82,8 +99,10 @@ export default function Posts() {
               return (
                 <View style={{}}>
                   <CardPost
+                    id={item.post_id}
                     title={item.title}
-                    description={item.description}
+                    navigation={navigation}
+                    description={item.subtitle}
                     image={item.image}
                   />
                 </View>

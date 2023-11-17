@@ -1,3 +1,8 @@
+import { api } from "./api";
+
+const USER_STORAGE_KEY = "user_nekhor_storage.v1";
+const TOKEN_STORAGE_KEY = "token_nekhor_storage.v1";
+
 export const DATA = [
   {
     id: 1,

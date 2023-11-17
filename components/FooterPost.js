@@ -68,6 +68,8 @@ const styles = StyleSheet.create({
     width: "100%",
     position: "fixed",
     bottom: 0,
+    zIndex: 100,
+    backgroundColor: "white",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

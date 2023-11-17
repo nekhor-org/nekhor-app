@@ -24,10 +24,10 @@ export default function App() {
           }}
         >
           <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="ItineraryDetail" component={ItineraryDetail} />
-          <Stack.Screen name="CreateItinerary" component={CreateItinerary} />
           <Stack.Screen name="PostDetail" component={PostDetail} />
           <Stack.Screen name="Posts" component={Posts} />
+          <Stack.Screen name="ItineraryDetail" component={ItineraryDetail} />
+          <Stack.Screen name="CreateItinerary" component={CreateItinerary} />
           <Stack.Screen name="Itinerary" component={Itinerary} />
           <Stack.Screen name="Visiteds" component={Visiteds} />
           <Stack.Screen name="Favorites" component={Favorites} />

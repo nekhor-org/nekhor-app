@@ -1,6 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  useWindowDimensions,
+} from "react-native";
 import Carousel from "../components/Carousel";
 import { PostsData } from "../utils";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
@@ -12,21 +19,43 @@ import HeaderBack from "../components/HeaderBack";
 import WebView from "react-native-webview";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FooterPost from "../components/FooterPost";
-export default function PostDetail({ navigation }) {
-  const [content, setContent] = useState(
-    "<p>Buddhist pilgrimage is as ancient as Buddhism itself. Indeed, it was Buddha Shakyamuni who made the first such pilgrimage, revealing to us the importance of visiting sacred sites. The Ghatikara Sutra, for instance, tells a story in which the Buddha was delighted upon arriving at a site where the previous Buddha Kashyapa had been before him. The location itself evoked a potent recollection for Buddha Shakyamuni of the previous Buddha Kashyapa’s presence there. The Buddha’s main disciples beseeched the Buddha to take a seat; they wanted him to impress the site with his own bodily presence, just as Kashyapa had done before. This episode teaches us that sacred sites themselves have power and can trigger rich experiences that aid us along the spiritual path. It also teaches us that a buddha’s appearance at a particular site imbues it with a specific power, or flow of blessings, a lasting imprint, a mark of the sacred.</p>"
-  );
+import { IP_ADDRESS, getPost } from "../api";
+import RenderHTML from "react-native-render-html";
+
+export default function PostDetail({ navigation, route }) {
+  const { width } = useWindowDimensions();
+  const postId = route?.params?.id;
+  // const postId = 8;
+  const [title, setTitle] = useState("");
+  const [subtitle, setSubtitle] = useState("");
+  const [local, setLocal] = useState("");
+  const [image, setImage] = useState("");
+  const [content, setContent] = useState("");
+  const getPostData = async () => {
+    const response = await getPost(postId);
+
+    console.log(response);
+    setTitle(response.data?.title);
+    setSubtitle(response.data?.subtitle);
+    setLocal(response.data?.local);
+    setContent(response.data?.content);
+    setImage(`${IP_ADDRESS}${response.data?.image}`);
+  };
+
+  useEffect(() => {
+    getPostData();
+  }, []);
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView>
-        <HeaderBack name="The Buddha" onBack={() => navigation.goBack()} />
+        <HeaderBack name={local} onBack={() => navigation.goBack()} />
         <View>
           <Image
             position="top"
             backgroundPosition="top"
             source={{
-              uri: "https://images.squarespace-cdn.com/content/v1/5b735348266c075124b0ffb3/1669424401961-I7AQJOUTBXRXKNLESX8U/PHOTO-2022-11-23-00-33-52.jpg?format=2500w",
+              uri: image,
             }}
             style={styles.image}
           />
@@ -38,7 +67,7 @@ export default function PostDetail({ navigation }) {
               marginVertical: 12,
             }}
           >
-            The Eight Great Sacred Sites
+            {title}
           </Text>
           <Text
             style={{
@@ -48,7 +77,7 @@ export default function PostDetail({ navigation }) {
               marginBottom: 12,
             }}
           >
-            INTRODUDTION TO THE BUDDHA
+            {subtitle}
           </Text>
           <View style={{ alignItems: "center", marginVertical: 12 }}>
             <View
@@ -61,11 +90,12 @@ export default function PostDetail({ navigation }) {
             ></View>
           </View>
           <SafeAreaView style={styles.webviewContainer}>
-            <WebView
-              style={styles.webview}
+            <RenderHTML contentWidth={width} source={{ html: content }} />
+            {/* <WebView
+              style={{ width: "100%", height: 900, flex: 1 }}
               originWhitelist={["*"]}
               source={{ html: content }}
-            />
+            /> */}
           </SafeAreaView>
         </View>
       </ScrollView>
@@ -106,8 +136,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   webviewContainer: {
-    flex: 1,
     alignSelf: "stretch",
     height: "100%",
+    paddingHorizontal: 16,
   },
 });

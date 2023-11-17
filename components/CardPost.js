@@ -10,6 +10,8 @@ import {
   StyleSheet,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { IP_ADDRESS } from "../api";
+import { TouchableOpacity } from "react-native-gesture-handler";
 const { width } = Dimensions.get("screen");
 
 export default function CardPost({
@@ -17,12 +19,14 @@ export default function CardPost({
   image,
   id,
   description,
+  navigation,
   kind = null,
 }) {
+  let imageData = `${IP_ADDRESS}${image}`;
   return (
-    <>
+    <TouchableOpacity onPress={() => navigation.push("PostDetail", { id: id })}>
       <View style={styles.containerCard}>
-        <Image source={{ uri: image }} style={styles.image} />
+        <Image source={{ uri: imageData }} style={styles.image} />
         <LinearGradient
           colors={["rgba(0, 0, 0, 0.00)", "#000"]}
           style={styles.gradient}
@@ -48,7 +52,7 @@ export default function CardPost({
           {title}
         </Text>
       </View>
-    </>
+    </TouchableOpacity>
   );
 }
 
