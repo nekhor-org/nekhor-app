@@ -3,8 +3,22 @@
     "name": "nekhor-app",
     "slug": "nekhor-app",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
+    "assetBundlePatterns": ["**/*"],
+    "plugins": [
+      [
+        "@morrowdigital/watermelondb-expo-plugin",
+        {
+          "databases": ["morrow.db"]
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "kotlinVersion": "1.6.10"
+          }
+        }
+      ]
     ]
   }
 }

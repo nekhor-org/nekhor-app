@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -13,8 +13,37 @@ import ItineraryDetail from "./views/ItineraryDetail";
 import CreateItinerary from "./views/CreateItinerary";
 const Stack = createStackNavigator();
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
+import { getMenus } from "./api";
+import { database } from "./model";
 
 export default function App() {
+  const getMenuDatas = async () => {
+    console.log("PEGANDO MENUS");
+    const response = await getMenus();
+    const res = await database.get("locals").query();
+    res.map(async (item) => {
+      await database.write(async () => {
+        await item.destroyPermanently();
+      });
+    });
+
+    response.data.map(async (item) => {
+      console.log(item.name);
+      const newPost = await database.write(async () => {
+        await database.get("locals").create((local) => {
+          local.id = item.id;
+          local.name = item.name;
+          local.localId = item.local_id;
+          local.languageId = item.language_id;
+        });
+      });
+    });
+  };
+
+  useEffect(() => {
+    getMenuDatas();
+  }, []);
+
   return (
     <ActionSheetProvider>
       <NavigationContainer>

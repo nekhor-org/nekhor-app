@@ -13,18 +13,20 @@ const { width } = Dimensions.get("screen");
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { getMenus } from "../api";
-
-export default function Header({ title, image, id, navigation }) {
+import withObservables from "@nozbe/with-observables";
+import { database } from "../model";
+function Header({ title, image, id, navigation }) {
   const { showActionSheetWithOptions } = useActionSheet();
   const [menus, setMenus] = React.useState([]);
 
   const getMenuData = async () => {
-    const response = await getMenus();
-    setMenus(response.data);
+    // const response = await getMenus();
+    const res = await database.get("locals").query();
+    setMenus(res);
   };
   React.useEffect(() => {
     getMenuData();
-  }, []);
+  }, [database]);
 
   const openMenu = () => {
     console.log(menus);
@@ -39,8 +41,8 @@ export default function Header({ title, image, id, navigation }) {
       (selectedIndex) => {
         console.log(menus[selectedIndex]);
         navigation.push("Posts", {
-          id: menus[selectedIndex].local_id,
-          name: menus[selectedIndex].name,
+          id: menus[selectedIndex].localId,
+          name: `${menus[selectedIndex].name}`,
         });
         console.log(menus[selectedIndex]);
       }
@@ -77,6 +79,12 @@ export default function Header({ title, image, id, navigation }) {
     </View>
   );
 }
+
+// const enhance = withObservables(["locals"], ({ locals }) => ({
+//   locals, // shortcut syntax for `comment: comment.observe()`
+// }));
+
+export default Header;
 
 const styles = StyleSheet.create({
   containerHeader: {

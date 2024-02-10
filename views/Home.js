@@ -16,6 +16,7 @@ export default function Home({ navigation }) {
 
   const getHomeData = async () => {
     const response = await getHome();
+    // console.log(response);
     setCategoriesData(response.data);
   };
 
@@ -70,7 +71,7 @@ export default function Home({ navigation }) {
                         });
                       }}
                     >
-                      View All
+                      <Text>View All</Text>
                     </TouchableOpacity>
                   </View>
                   <FlatList

@@ -36,8 +36,8 @@ export default function Carousel({ propsData }) {
   const scrollXAnimated = React.useRef(new Animated.Value(0)).current;
   const [index, setIndex] = React.useState(0);
   const data = propsData;
-  console.log(propsData);
-  console.log(data);
+  // console.log(propsData);
+  // console.log(data);
 
   const setAnimatedIndex = React.useCallback((i) => {
     setIndex(i);
