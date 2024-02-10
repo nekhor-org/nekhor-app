@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Carousel from "../components/Carousel";
 import { DATA } from "../utils";
@@ -8,8 +8,22 @@ import CardHome from "../components/CardHome";
 import Footer from "../components/Footer";
 import HeaderApp from "../components/HeaderApp";
 import CardPost from "../components/CardPost";
-export default function Favorites() {
-  const [favoritesData, setFavoritesData] = useState(DATA);
+import { getHome, getPosts } from "../api";
+export default function Favorites({ navigation }) {
+  const [favoritesData, setFavoritesData] = useState([]);
+
+  const [homePosts, setHomePosts] = useState([]);
+
+  const getHomeData = async () => {
+    const response = await getPosts("q[has_home_true]=true");
+    console.log(response);
+    setFavoritesData(response.data);
+  };
+
+  useEffect(() => {
+    getHomeData();
+  }, []);
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
@@ -24,6 +38,7 @@ export default function Favorites() {
             contentContainerStyle={{
               justifyContent: "start",
               padding: 16,
+              marginBottom: 90,
             }}
             renderItem={({ item, index }) => {
               return (
@@ -31,8 +46,8 @@ export default function Favorites() {
                   <CardPost
                     kind="heart"
                     title={item.title}
-                    description={item.description}
-                    image={item.poster}
+                    description={item.subtitle}
+                    image={item.image}
                   />
                 </View>
               );
@@ -40,7 +55,7 @@ export default function Favorites() {
           />
         </View>
       </ScrollView>
-      <Footer active="heart" />
+      <Footer navigation={navigation} active="heart" />
     </View>
   );
 }

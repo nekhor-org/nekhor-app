@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Carousel from "../components/Carousel";
 import { DATA } from "../utils";
@@ -8,8 +8,20 @@ import CardHome from "../components/CardHome";
 import Footer from "../components/Footer";
 import HeaderApp from "../components/HeaderApp";
 import CardPost from "../components/CardPost";
-export default function Visiteds() {
-  const [visitedsData, setVisitedsData] = useState(DATA);
+import { getPosts } from "../api";
+export default function Visiteds({ navigation }) {
+  const [visitedsData, setVisitedsData] = useState([]);
+
+  const getHomeData = async () => {
+    const response = await getPosts("q[has_home_true]=true");
+    console.log(response);
+    setVisitedsData(response.data);
+  };
+
+  useEffect(() => {
+    getHomeData();
+  }, []);
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
@@ -24,6 +36,7 @@ export default function Visiteds() {
             contentContainerStyle={{
               justifyContent: "start",
               padding: 16,
+              marginBottom: 90,
             }}
             renderItem={({ item, index }) => {
               return (
@@ -31,8 +44,8 @@ export default function Visiteds() {
                   <CardPost
                     kind="map"
                     title={item.title}
-                    description={item.description}
-                    image={item.poster}
+                    description={item.subtitle}
+                    image={item.image}
                   />
                 </View>
               );
@@ -40,7 +53,7 @@ export default function Visiteds() {
           />
         </View>
       </ScrollView>
-      <Footer active="map" />
+      <Footer navigation={navigation} active="map" />
     </View>
   );
 }

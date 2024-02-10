@@ -15,6 +15,10 @@ export const getMenus = () => {
   return api.get("/api/locals");
 };
 
+export const getHome = () => {
+  return api.get("/api/locals/home");
+};
+
 export const getSubCategories = (params) => {
   return api.get(`/api/countries?${params}`);
 };

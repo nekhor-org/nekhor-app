@@ -10,7 +10,7 @@ import HeaderApp from "../components/HeaderApp";
 import CardPost from "../components/CardPost";
 import HeaderItinerary from "../components/HeaderItinerary";
 import ListItinerary from "../components/ListItinerary";
-export default function Itinerary() {
+export default function Itinerary({ navigation }) {
   const [itinerariesData, setItinerariesData] = useState(Itineraries);
   return (
     <View style={{ flex: 1 }}>
@@ -37,7 +37,7 @@ export default function Itinerary() {
           />
         </View>
       </ScrollView>
-      <Footer active="location" />
+      <Footer navigation={navigation} active="location" />
     </View>
   );
 }

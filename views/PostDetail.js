@@ -31,15 +31,24 @@ export default function PostDetail({ navigation, route }) {
   const [local, setLocal] = useState("");
   const [image, setImage] = useState("");
   const [content, setContent] = useState("");
+  const [favorited, setFavorited] = useState(false);
+  const [visited, setVisited] = useState(false);
   const getPostData = async () => {
     const response = await getPost(postId);
 
-    console.log(response);
     setTitle(response.data?.title);
     setSubtitle(response.data?.subtitle);
     setLocal(response.data?.local);
     setContent(response.data?.content);
     setImage(`${IP_ADDRESS}${response.data?.image}`);
+  };
+
+  const setVisitedData = async () => {
+    setVisited(!visited);
+  };
+
+  const setFavoritedData = async () => {
+    setFavorited(!favorited);
   };
 
   useEffect(() => {
@@ -51,14 +60,40 @@ export default function PostDetail({ navigation, route }) {
       <ScrollView>
         <HeaderBack name={local} onBack={() => navigation.goBack()} />
         <View>
-          <Image
-            position="top"
-            backgroundPosition="top"
-            source={{
-              uri: image,
-            }}
-            style={styles.image}
-          />
+          <View style={styles.imageContainer}>
+            <Image
+              position="top"
+              backgroundPosition="top"
+              source={{
+                uri: image,
+              }}
+              style={styles.image}
+            />
+            <View style={styles.absoluteContainer}>
+              <TouchableOpacity
+                onPress={setFavoritedData}
+                style={
+                  favorited ? styles.iconContainerActive : styles.iconContainer
+                }
+              >
+                <Image
+                  source={require(`../assets/heart_active.svg`)}
+                  style={styles.menu}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={setVisitedData}
+                style={
+                  visited ? styles.iconContainerActive : styles.iconContainer
+                }
+              >
+                <Image
+                  source={require(`../assets/map_active.svg`)}
+                  style={styles.menu}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
           <Text
             style={{
               color: "#A67C00",
@@ -119,6 +154,20 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
   },
+
+  imageContainer: {
+    position: "relative",
+  },
+  absoluteContainer: {
+    position: "absolute",
+    color: "white",
+    bottom: 10,
+    padding: 16,
+    right: 10,
+    backgroundColor: "black",
+    borderRadius: 9999,
+  },
+
   image: {
     height: 220,
     width: "100%",
@@ -129,8 +178,23 @@ const styles = StyleSheet.create({
   absoluteContainer: {
     position: "absolute",
     color: "white",
-    bottom: 0,
+    right: "30%",
+    bottom: 2,
     padding: 16,
+    display: "flex",
+    flexDirection: "row",
+  },
+  iconContainer: {
+    padding: 12,
+    marginHorizontal: 4,
+    borderRadius: 9999,
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+  },
+  iconContainerActive: {
+    padding: 12,
+    marginHorizontal: 4,
+    borderRadius: 9999,
+    backgroundColor: "#A67C00",
   },
   webview: {
     flex: 1,
@@ -139,5 +203,11 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     height: "100%",
     paddingHorizontal: 16,
+  },
+  menu: {
+    height: 22,
+    width: 22,
+    marginHorizontal: 4,
+    objectFit: "cover",
   },
 });

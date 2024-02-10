@@ -8,17 +8,34 @@ import CardHome from "../components/CardHome";
 import { Categories } from "../utils";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { getMenus } from "../api";
+import { getHome, getMenus, getPosts } from "../api";
 
 export default function Home({ navigation }) {
-  const [categoriesData, setCategoriesData] = useState(Categories);
+  const [categoriesData, setCategoriesData] = useState([]);
+  const [homePosts, setHomePosts] = useState([]);
+
+  const getHomeData = async () => {
+    const response = await getHome();
+    setCategoriesData(response.data);
+  };
+
+  const getPostsHome = async () => {
+    const response = await getPosts("q[has_home_true]=true");
+
+    setHomePosts(response.data);
+  };
+
+  useEffect(() => {
+    getPostsHome();
+    getHomeData();
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
         <Header navigation={navigation} />
         <View style={{ height: 340 }}>
-          <Carousel propsData={DATA} />
+          {homePosts && <Carousel propsData={homePosts} />}
         </View>
         <View>
           <FlatList
@@ -30,6 +47,7 @@ export default function Home({ navigation }) {
             contentContainerStyle={{
               justifyContent: "start",
               padding: 16,
+              marginBottom: 90,
             }}
             renderItem={({ item, index }) => {
               return (
@@ -45,7 +63,12 @@ export default function Home({ navigation }) {
                     <Text style={{ fontSize: 32 }}>{item.name}</Text>
                     <TouchableOpacity
                       style={{ color: "#A67C00", fontSize: 14 }}
-                      onPress={() => console.log(`VER TODOS ${item.id}`)}
+                      onPress={() => {
+                        navigation.push("Posts", {
+                          id: item.local_id,
+                          name: item.name,
+                        });
+                      }}
                     >
                       View All
                     </TouchableOpacity>
@@ -59,30 +82,34 @@ export default function Home({ navigation }) {
                     contentContainerStyle={{}}
                     renderItem={({ item, index }) => {
                       return (
-                        <View style={{}}>
-                          <Text style={{ fontSize: 14, marginTop: 8 }}>
-                            {item.name}
-                          </Text>
-                          <FlatList
-                            horizontal={true}
-                            data={item.posts}
-                            keyExtractor={(_, index) => String(index)}
-                            scrollEnabled={true}
-                            renderToHardwareTextureAndroid
-                            removeClippedSubviews={false}
-                            contentContainerStyle={{}}
-                            renderItem={({ item, index }) => {
-                              return (
-                                <CardHome
-                                  navigation={navigation}
-                                  title={item.title}
-                                  image={item.image}
-                                  id={item.id}
-                                />
-                              );
-                            }}
-                          />
-                        </View>
+                        <>
+                          {item.posts && item.posts.length > 0 && (
+                            <View style={{}}>
+                              <Text style={{ fontSize: 14, marginTop: 8 }}>
+                                {item.name}
+                              </Text>
+                              <FlatList
+                                horizontal={true}
+                                data={item.posts}
+                                keyExtractor={(_, index) => String(index)}
+                                scrollEnabled={true}
+                                renderToHardwareTextureAndroid
+                                removeClippedSubviews={false}
+                                contentContainerStyle={{}}
+                                renderItem={({ item, index }) => {
+                                  return (
+                                    <CardHome
+                                      navigation={navigation}
+                                      title={item.title}
+                                      image={item.image}
+                                      id={item.post_id}
+                                    />
+                                  );
+                                }}
+                              />
+                            </View>
+                          )}
+                        </>
                       );
                     }}
                   />
@@ -92,7 +119,7 @@ export default function Home({ navigation }) {
           />
         </View>
       </ScrollView>
-      <Footer />
+      <Footer navigation={navigation} />
     </View>
   );
 }

@@ -23,6 +23,7 @@ import {
 const { width } = Dimensions.get("screen");
 import { EvilIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { IP_ADDRESS } from "../api";
 
 const OVERFLOW_HEIGHT = 70;
 const SPACING = 10;
@@ -34,7 +35,9 @@ export default function Carousel({ propsData }) {
   const scrollX = React.useRef(new Animated.Value(0)).current;
   const scrollXAnimated = React.useRef(new Animated.Value(0)).current;
   const [index, setIndex] = React.useState(0);
-  const [data, setData] = React.useState(propsData);
+  const data = propsData;
+  console.log(propsData);
+  console.log(data);
 
   const setAnimatedIndex = React.useCallback((i) => {
     setIndex(i);
@@ -128,6 +131,9 @@ export default function Carousel({ propsData }) {
                 inputRange,
                 outputRange: [0.8, 1, 1.3],
               });
+
+              let imageData = `${IP_ADDRESS}${item.image}`;
+              console.log(imageData);
               return (
                 <Animated.View
                   style={{
@@ -142,7 +148,7 @@ export default function Carousel({ propsData }) {
                 >
                   <View style={styles.relativeContainer}>
                     <Image
-                      source={{ uri: item.poster }}
+                      source={{ uri: imageData }}
                       style={{ width: ITEM_WIDTH, height: ITEM_HEIGHT }}
                     />
                     <LinearGradient
@@ -154,7 +160,7 @@ export default function Carousel({ propsData }) {
                         {item.title}
                       </Text>
                       <Text style={{ color: "white", fontSize: 14 }}>
-                        {item.description}
+                        {item.subtitle}
                       </Text>
                     </View>
                   </View>
