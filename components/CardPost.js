@@ -36,8 +36,8 @@ export default function CardPost({
             <Image
               source={
                 kind == "heart"
-                  ? require(`../assets/heart_active.svg`)
-                  : require(`../assets/map_active.svg`)
+                  ? require(`../assets/heart_active.png`)
+                  : require(`../assets/map_active.png`)
               }
               style={styles.menu}
             />
@@ -61,16 +61,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     backgroundColor: "#fff",
-    padding: 8,
+    paddingVertical: 8,
     borderRadius: 8,
     position: "relative",
   },
   gradient: {
     height: "50%",
-    width: "95.5%",
+    width: "100%",
     position: "absolute",
-    borderRadius: 8,
     bottom: 0,
+    borderRadius: 8,
   },
   image: {
     height: 200,

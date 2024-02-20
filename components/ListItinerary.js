@@ -20,7 +20,7 @@ export default function ListItinerary({ name, id }) {
           {name}
         </Text>
         <Image
-          source={require(`../assets/arrow_left.svg`)}
+          source={require(`../assets/arrow_left.png`)}
           style={styles.menu}
         />
       </View>

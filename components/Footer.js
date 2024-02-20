@@ -24,8 +24,8 @@ export default function Footer({ active = "explore", navigation }) {
           <Image
             source={
               active == "explore"
-                ? require(`../assets/explore_active.svg`)
-                : require(`../assets/explore.svg`)
+                ? require(`../assets/explore_active.png`)
+                : require(`../assets/explore.png`)
             }
             style={styles.menu}
           />
@@ -37,8 +37,8 @@ export default function Footer({ active = "explore", navigation }) {
           <Image
             source={
               active == "heart"
-                ? require(`../assets/heart_active.svg`)
-                : require(`../assets/heart.svg`)
+                ? require(`../assets/heart_active.png`)
+                : require(`../assets/heart.png`)
             }
             style={styles.menu}
           />
@@ -50,10 +50,10 @@ export default function Footer({ active = "explore", navigation }) {
           <Image
             source={
               active == "map"
-                ? require(`../assets/map_active.svg`)
-                : require(`../assets/map.svg`)
+                ? require(`../assets/map_active.png`)
+                : require(`../assets/map.png`)
             }
-            style={styles.menu}
+            style={styles.menuMap}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -63,8 +63,8 @@ export default function Footer({ active = "explore", navigation }) {
           <Image
             source={
               active == "location"
-                ? require(`../assets/location_active.svg`)
-                : require(`../assets/location.svg`)
+                ? require(`../assets/location_active.png`)
+                : require(`../assets/location.png`)
             }
             style={styles.menu}
           />
@@ -81,9 +81,8 @@ export default function Footer({ active = "explore", navigation }) {
 const styles = StyleSheet.create({
   containerHeader: {
     flex: 1,
-    padding: 16,
-    width: "100%",
-    position: "fixed",
+    padding: 8,
+    position: "absolute",
     bottom: 0,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -92,7 +91,7 @@ const styles = StyleSheet.create({
   containerMenu: {
     flex: 1,
     padding: 16,
-    width: "100%",
+    width: 100,
     position: "relative",
     bottom: 0,
     flexDirection: "row",
@@ -101,7 +100,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   gradient: {
-    height: "100%",
+    height: "150%",
     width: "100%",
     position: "absolute",
     bottom: 0,
@@ -129,6 +128,12 @@ const styles = StyleSheet.create({
   menu: {
     height: 32,
     width: 32,
+    marginHorizontal: 4,
+    objectFit: "cover",
+  },
+  menuMap: {
+    height: 48,
+    width: 36,
     marginHorizontal: 4,
     objectFit: "cover",
   },

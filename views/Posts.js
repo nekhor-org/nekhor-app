@@ -38,7 +38,7 @@ export default function Posts({ navigation, route }) {
     getCountryData();
   }, []);
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView>
         <HeaderBack name={name} onBack={() => navigation.goBack()} />
         <View>

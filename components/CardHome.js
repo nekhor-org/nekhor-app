@@ -41,19 +41,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     backgroundColor: "#fff",
-    padding: 8,
+    paddingVertical: 8,
     borderRadius: 8,
     position: "relative",
   },
   gradient: {
     height: "50%",
+    marginHorizontal: 8,
     width: 120,
     position: "absolute",
     bottom: 0,
+    borderRadius: 8,
   },
   image: {
     height: 150,
     width: 120,
+    marginHorizontal: 8,
     borderRadius: 8,
   },
 

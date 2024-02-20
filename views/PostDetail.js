@@ -57,7 +57,7 @@ export default function PostDetail({ navigation, route }) {
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
-      <ScrollView>
+      <ScrollView style={{ marginBottom: 100 }}>
         <HeaderBack name={local} onBack={() => navigation.goBack()} />
         <View>
           <View style={styles.imageContainer}>
@@ -77,7 +77,7 @@ export default function PostDetail({ navigation, route }) {
                 }
               >
                 <Image
-                  source={require(`../assets/heart_active.svg`)}
+                  source={require(`../assets/heart_active.png`)}
                   style={styles.menu}
                 />
               </TouchableOpacity>
@@ -88,7 +88,7 @@ export default function PostDetail({ navigation, route }) {
                 }
               >
                 <Image
-                  source={require(`../assets/map_active.svg`)}
+                  source={require(`../assets/map_active.png`)}
                   style={styles.menu}
                 />
               </TouchableOpacity>
@@ -158,15 +158,15 @@ const styles = StyleSheet.create({
   imageContainer: {
     position: "relative",
   },
-  absoluteContainer: {
-    position: "absolute",
-    color: "white",
-    bottom: 10,
-    padding: 16,
-    right: 10,
-    backgroundColor: "black",
-    borderRadius: 9999,
-  },
+  // absoluteContainer: {
+  //   position: "absolute",
+  //   color: "white",
+  //   bottom: 10,
+  //   padding: 16,
+  //   right: 10,
+  //   backgroundColor: "black",
+  //   borderRadius: 9999,
+  // },
 
   image: {
     height: 220,
@@ -178,10 +178,13 @@ const styles = StyleSheet.create({
   absoluteContainer: {
     position: "absolute",
     color: "white",
-    right: "30%",
+    right: "0",
     bottom: 2,
-    padding: 16,
+    width: "100%",
+    paddingVertical: 16,
     display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     flexDirection: "row",
   },
   iconContainer: {

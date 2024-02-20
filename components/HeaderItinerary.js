@@ -46,7 +46,7 @@ export default function HeaderItinerary({ name }) {
             >
               Add
             </Text>
-            <Image source={require(`../assets/plus.svg`)} style={styles.menu} />
+            <Image source={require(`../assets/plus.png`)} style={styles.menu} />
           </>
         </TouchableOpacity>
       </View>

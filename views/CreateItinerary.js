@@ -15,7 +15,7 @@ import CardSelectItinerary from "../components/CardSelectItinerary";
 export default function CreateItinerary() {
   const [selected, setSelected] = useState(null);
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView style={{ marginBottom: 80 }}>
         <HeaderBack name="Add itinerary" />
         <View style={{ padding: 16 }}>

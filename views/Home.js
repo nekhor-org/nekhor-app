@@ -1,6 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Carousel from "../components/Carousel";
 import { DATA } from "../utils";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
@@ -9,6 +15,7 @@ import { Categories } from "../utils";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { getHome, getMenus, getPosts } from "../api";
+const { width } = Dimensions.get("screen");
 
 export default function Home({ navigation }) {
   const [categoriesData, setCategoriesData] = useState([]);
@@ -27,12 +34,13 @@ export default function Home({ navigation }) {
   };
 
   useEffect(() => {
+    console.log("TESTE ", width);
     getPostsHome();
     getHomeData();
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView>
         <Header navigation={navigation} />
         <View style={{ height: 340 }}>

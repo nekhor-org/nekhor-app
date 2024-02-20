@@ -23,7 +23,7 @@ export default function Visiteds({ navigation }) {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView>
         <HeaderApp name="Already visited" />
         <View>

@@ -25,7 +25,7 @@ export default function Favorites({ navigation }) {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView>
         <HeaderApp name="My favorites" />
         <View>

@@ -29,7 +29,7 @@ export default function HeaderApp({ name }) {
           style={{ color: "#A67C00", fontSize: 14, justifyContent: "flex-end" }}
           onPress={() => console.log(`VER TODOS ${item.id}`)}
         >
-          Remove All
+          <Text>Remove All</Text>
         </TouchableOpacity>
       </View>
     </View>

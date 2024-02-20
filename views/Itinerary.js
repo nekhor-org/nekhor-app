@@ -13,7 +13,7 @@ import ListItinerary from "../components/ListItinerary";
 export default function Itinerary({ navigation }) {
   const [itinerariesData, setItinerariesData] = useState(Itineraries);
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView>
         <HeaderItinerary name="My itinerary" />
         <View>

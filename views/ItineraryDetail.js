@@ -13,7 +13,7 @@ import CardItinerary from "../components/CardItinerary";
 export default function ItineraryDetail() {
   const [itineraries, setVisitedsData] = useState(PostsData);
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView>
         <HeaderBack name="Itinerary example #21..." hasMenu />
         <View>
