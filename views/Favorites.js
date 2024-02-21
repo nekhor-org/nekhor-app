@@ -9,15 +9,29 @@ import Footer from "../components/Footer";
 import HeaderApp from "../components/HeaderApp";
 import CardPost from "../components/CardPost";
 import { getHome, getPosts } from "../api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 export default function Favorites({ navigation }) {
   const [favoritesData, setFavoritesData] = useState([]);
 
   const [homePosts, setHomePosts] = useState([]);
 
   const getHomeData = async () => {
-    const response = await getPosts("q[has_home_true]=true");
-    console.log(response);
-    setFavoritesData(response.data);
+    const values = await AsyncStorage.getItem("favorites");
+    if (values !== null && JSON.parse(values).length > 0) {
+      query = "";
+      JSON.parse(values).map((item) => {
+        query += `q[id_in][]=${item}&`;
+      });
+      const response = await getPosts(query);
+
+      setFavoritesData(response.data);
+    }
+  };
+
+  const removeAll = async () => {
+    await AsyncStorage.setItem("favorites", JSON.stringify([]));
+    setFavoritesData([]);
   };
 
   useEffect(() => {
@@ -27,7 +41,7 @@ export default function Favorites({ navigation }) {
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView>
-        <HeaderApp name="My favorites" />
+        <HeaderApp name="My favorites" action={() => removeAll()} />
         <View>
           <FlatList
             data={favoritesData}

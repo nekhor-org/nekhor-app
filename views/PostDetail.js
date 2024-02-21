@@ -21,6 +21,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import FooterPost from "../components/FooterPost";
 import { IP_ADDRESS, getPost } from "../api";
 import RenderHTML from "react-native-render-html";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function PostDetail({ navigation, route }) {
   const { width } = useWindowDimensions();
@@ -32,7 +33,9 @@ export default function PostDetail({ navigation, route }) {
   const [image, setImage] = useState("");
   const [content, setContent] = useState("");
   const [favorited, setFavorited] = useState(false);
+  const [favorites, setFavorites] = useState([]);
   const [visited, setVisited] = useState(false);
+  const [visiteds, setVisiteds] = useState([]);
   const getPostData = async () => {
     const response = await getPost(postId);
 
@@ -44,14 +47,107 @@ export default function PostDetail({ navigation, route }) {
   };
 
   const setVisitedData = async () => {
-    setVisited(!visited);
+    try {
+      if (visiteds.length > 0) {
+        if (visiteds.includes(postId)) {
+          let newVisiteds = visiteds.filter((item) => item != postId);
+          setVisiteds(newVisiteds);
+          await AsyncStorage.setItem("visiteds", JSON.stringify(newVisiteds));
+          setVisited(false);
+        } else {
+          await AsyncStorage.setItem(
+            "visiteds",
+            JSON.stringify([...visiteds, postId])
+          );
+          setVisiteds([...visiteds, postId]);
+          setVisited(true);
+        }
+      } else {
+        setVisited(true);
+        setVisiteds([postId]);
+        await AsyncStorage.setItem("visiteds", JSON.stringify([postId]));
+      }
+    } catch (e) {
+      console.log(e);
+      // saving error
+    }
+  };
+
+  const getVisitedData = async () => {
+    try {
+      const values = await AsyncStorage.getItem("visiteds");
+
+      if (values !== null) {
+        setVisiteds(JSON.parse(values));
+        let exist = JSON.parse(values).filter((item) => item == postId);
+        if (exist.length > 0) {
+          setVisited(true);
+        }
+        return values;
+      } else {
+        console.log(VAZIO);
+        setVisited(false);
+        setVisiteds([]);
+      }
+
+      return [];
+    } catch (e) {
+      console.log(e);
+      return [];
+    }
+  };
+
+  const getFavoriteData = async () => {
+    try {
+      const values = await AsyncStorage.getItem("favorites");
+      if (values !== null) {
+        setFavorites(JSON.parse(values));
+        let exist = JSON.parse(values).filter((item) => item == postId);
+        if (exist.length > 0) {
+          setFavorited(true);
+        }
+        return values;
+      } else {
+        setFavorites([]);
+      }
+
+      return [];
+    } catch (e) {
+      console.log(e);
+      return [];
+    }
   };
 
   const setFavoritedData = async () => {
-    setFavorited(!favorited);
+    try {
+      if (favorites.length > 0) {
+        if (favorites.includes(postId)) {
+          let newFavorites = favorites.filter((item) => item != postId);
+          setFavorites(newFavorites);
+          await AsyncStorage.setItem("favorites", JSON.stringify(newFavorites));
+          setFavorited(false);
+        } else {
+          await AsyncStorage.setItem(
+            "favorites",
+            JSON.stringify([...favorites, postId])
+          );
+          setFavorites([...favorites, postId]);
+          setFavorited(true);
+        }
+      } else {
+        setFavorited(true);
+        setFavorites([postId]);
+        await AsyncStorage.setItem("favorites", JSON.stringify([postId]));
+      }
+    } catch (e) {
+      console.log(e);
+      // saving error
+    }
   };
 
   useEffect(() => {
+    getFavoriteData();
+    getVisitedData();
     getPostData();
   }, []);
 

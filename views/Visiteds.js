@@ -9,13 +9,26 @@ import Footer from "../components/Footer";
 import HeaderApp from "../components/HeaderApp";
 import CardPost from "../components/CardPost";
 import { getPosts } from "../api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 export default function Visiteds({ navigation }) {
   const [visitedsData, setVisitedsData] = useState([]);
 
   const getHomeData = async () => {
-    const response = await getPosts("q[has_home_true]=true");
-    console.log(response);
-    setVisitedsData(response.data);
+    const values = await AsyncStorage.getItem("visiteds");
+    if (values !== null && JSON.parse(values).length > 0) {
+      query = "";
+      JSON.parse(values).map((item) => {
+        query += `q[id_in][]=${item}&`;
+      });
+      const response = await getPosts(query);
+      setVisitedsData(response.data);
+    }
+  };
+
+  const removeAll = async () => {
+    await AsyncStorage.setItem("visiteds", JSON.stringify([]));
+    setVisitedsData([]);
   };
 
   useEffect(() => {
@@ -25,7 +38,7 @@ export default function Visiteds({ navigation }) {
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView>
-        <HeaderApp name="Already visited" />
+        <HeaderApp name="Already visited" action={() => removeAll()} />
         <View>
           <FlatList
             data={visitedsData}

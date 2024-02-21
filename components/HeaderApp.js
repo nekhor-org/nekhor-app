@@ -12,7 +12,7 @@ import {
 import { TouchableOpacity } from "react-native-gesture-handler";
 const { width } = Dimensions.get("screen");
 
-export default function HeaderApp({ name }) {
+export default function HeaderApp({ name, action = null }) {
   return (
     <View style={styles.containerHeader}>
       <View
@@ -27,7 +27,7 @@ export default function HeaderApp({ name }) {
         <Text style={{ fontSize: 32 }}>{name}</Text>
         <TouchableOpacity
           style={{ color: "#A67C00", fontSize: 14, justifyContent: "flex-end" }}
-          onPress={() => console.log(`VER TODOS ${item.id}`)}
+          onPress={action}
         >
           <Text>Remove All</Text>
         </TouchableOpacity>
