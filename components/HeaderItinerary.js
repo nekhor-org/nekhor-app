@@ -12,7 +12,7 @@ import {
 import { TouchableOpacity } from "react-native-gesture-handler";
 const { width } = Dimensions.get("screen");
 
-export default function HeaderItinerary({ name }) {
+export default function HeaderItinerary({ name, navigation }) {
   return (
     <View style={styles.containerHeader}>
       <View
@@ -33,7 +33,7 @@ export default function HeaderItinerary({ name }) {
             alignItems: "center",
             flexDirection: "row",
           }}
-          onPress={() => console.log(`VER TODOS`)}
+          onPress={() => navigation.push("CreateItinerary")}
         >
           <>
             <Text

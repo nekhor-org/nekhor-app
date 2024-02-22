@@ -23,6 +23,10 @@ export const getSubCategories = (params) => {
   return api.get(`/api/countries?${params}`);
 };
 
+export const getPostsItineraries = () => {
+  return api.get(`/api/posts/get_itineraries`);
+};
+
 export const getPosts = (params) => {
   return api.get(`/api/posts?${params}`);
 };

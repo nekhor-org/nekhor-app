@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Carousel from "../components/Carousel";
 import { Itineraries } from "../utils";
@@ -10,12 +10,28 @@ import HeaderApp from "../components/HeaderApp";
 import CardPost from "../components/CardPost";
 import HeaderItinerary from "../components/HeaderItinerary";
 import ListItinerary from "../components/ListItinerary";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 export default function Itinerary({ navigation }) {
-  const [itinerariesData, setItinerariesData] = useState(Itineraries);
+  const [itinerariesData, setItinerariesData] = useState([]);
+
+  const getItineraries = async () => {
+    const values = await AsyncStorage.getItem("itineraries");
+    if (values) {
+      setItinerariesData(JSON.parse(values));
+    } else {
+      setItinerariesData([]);
+    }
+  };
+
+  useEffect(() => {
+    getItineraries();
+  }, []);
+
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView>
-        <HeaderItinerary name="My itinerary" />
+        <HeaderItinerary name="My itinerary" navigation={navigation} />
         <View>
           <FlatList
             data={itinerariesData}
@@ -30,7 +46,12 @@ export default function Itinerary({ navigation }) {
             renderItem={({ item, index }) => {
               return (
                 <View style={{}}>
-                  <ListItinerary name={item.name} />
+                  <ListItinerary
+                    name={item.name}
+                    navigate={() =>
+                      navigation.push("ItineraryDetail", { id: item.name })
+                    }
+                  />
                 </View>
               );
             }}

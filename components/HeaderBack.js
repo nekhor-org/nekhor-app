@@ -12,16 +12,27 @@ import {
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width } = Dimensions.get("screen");
 const icon = (name) => <MaterialIcons key={name} name={name} size={24} />;
 
-export default function HeaderBack({ name, hasMenu, onBack }) {
+export default function HeaderBack({ name, hasMenu, onBack, navigation }) {
   const { showActionSheetWithOptions } = useActionSheet();
 
+  const deleteItinerary = async () => {
+    const values = await AsyncStorage.getItem("itineraries");
+    if (values) {
+      const itinerary = JSON.parse(values).filter((item) => item.name !== name);
+      await AsyncStorage.setItem("itineraries", JSON.stringify(itinerary));
+    }
+  };
+
   const openSettings = () => {
-    const options = ["Re-order", "Edit", "Delete"];
-    const icons = [icon("reorder"), icon("edit"), icon("delete")];
+    // const options = ["Re-order", "Edit", "Delete"];
+    const options = ["Edit", "Delete", "Cancel"];
+    // const icons = [icon("reorder"), icon("edit"), icon("delete")];
+    const icons = [icon("edit"), icon("delete"), icon("cancel")];
     showActionSheetWithOptions(
       {
         options,
@@ -29,8 +40,13 @@ export default function HeaderBack({ name, hasMenu, onBack }) {
         title: "Settings",
         titleTextStyle: { color: "black", fontSize: 24, fontWeight: 700 },
       },
-      (selectedIndex) => {
-        console.log(selectedIndex);
+      async (selectedIndex) => {
+        if (selectedIndex == 1) {
+          await deleteItinerary();
+          navigation.replace("Itinerary");
+        } else if (selectedIndex == 0) {
+          navigation.replace("UpdateItinerary", { id: name });
+        }
       }
     );
   };

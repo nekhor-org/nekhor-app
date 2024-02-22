@@ -11,12 +11,15 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 const { width } = Dimensions.get("screen");
+import { IP_ADDRESS } from "../api";
 
 export default function CardItinerary({ name, id, image, description }) {
+  let imageData = `${IP_ADDRESS}${image}`;
+
   return (
     <>
       <View style={styles.textContainer}>
-        <Image source={{ uri: image }} style={styles.image} />
+        <Image source={{ uri: imageData }} style={styles.image} />
         <View style={{ marginLeft: 12, width: "70%" }}>
           <Text
             numberOfLines={4}

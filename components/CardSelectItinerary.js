@@ -12,6 +12,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { CheckBox } from "react-native-elements";
 const { width } = Dimensions.get("screen");
+import { IP_ADDRESS } from "../api";
 
 export default function CardSelectItinerary({
   name,
@@ -21,6 +22,8 @@ export default function CardSelectItinerary({
   isChecked,
   setChecked,
 }) {
+  let imageData = `${IP_ADDRESS}${image}`;
+
   return (
     <View
       style={{
@@ -31,7 +34,7 @@ export default function CardSelectItinerary({
       }}
     >
       <View style={styles.textContainer}>
-        <Image source={{ uri: image }} style={styles.image} />
+        <Image source={{ uri: imageData }} style={styles.image} />
         <View style={{ marginLeft: 12, width: "70%" }}>
           <Text
             numberOfLines={4}

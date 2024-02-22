@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Carousel from "../components/Carousel";
 import { Countries } from "../utils";
@@ -12,16 +12,65 @@ import HeaderBack from "../components/HeaderBack";
 import CardItinerary from "../components/CardItinerary";
 import FooterItinerary from "../components/FooterItinerary";
 import CardSelectItinerary from "../components/CardSelectItinerary";
-export default function CreateItinerary() {
-  const [selected, setSelected] = useState(null);
+import { getPostsItineraries } from "../api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+export default function CreateItinerary({ navigation }) {
+  const [selected, setSelected] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [name, setName] = useState("");
+
+  const getPostsData = async () => {
+    const response = await getPostsItineraries();
+    setPosts(response.data);
+  };
+
+  const setSelectedData = async (data) => {
+    if (selected.includes(data)) {
+      let newSelecteds = selected.filter((item) => item != data);
+      setSelected(newSelecteds);
+    } else {
+      setSelected([...selected, data]);
+    }
+
+    console.log(selected);
+  };
+
+  const createItinerary = async () => {
+    let res = await AsyncStorage.getItem("itineraries");
+    const data = {
+      name: name,
+      posts: selected,
+    };
+
+    console.log(data);
+
+    console.log(res);
+    if (res) {
+      await AsyncStorage.setItem(
+        "itineraries",
+        JSON.stringify([...JSON.parse(res), data])
+      );
+    } else {
+      await AsyncStorage.setItem("itineraries", JSON.stringify([data]));
+    }
+
+    navigation.goBack();
+  };
+
+  useEffect(() => {
+    getPostsData();
+  }, []);
+
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView style={{ marginBottom: 80 }}>
-        <HeaderBack name="Add itinerary" />
+        <HeaderBack name="Add itinerary" onBack={() => navigation.goBack()} />
         <View style={{ padding: 16 }}>
           <TextInput
             placeholder="Choose itinerary name"
             placeholderTextColor="#8B8B8B"
+            onChangeText={(item) => setName(item)}
             style={{
               borderRadius: 52,
               backgroundColor: "#EDEDED",
@@ -35,7 +84,7 @@ export default function CreateItinerary() {
         </View>
         <View>
           <FlatList
-            data={Countries}
+            data={posts}
             keyExtractor={(_, index) => String(index)}
             scrollEnabled={false}
             renderToHardwareTextureAndroid
@@ -58,7 +107,7 @@ export default function CreateItinerary() {
                     <Text
                       style={{ fontSize: 18, color: "black", fontWeight: 700 }}
                     >
-                      {item.name}
+                      {item.local?.name}
                     </Text>
                     <Image
                       source={require(`../assets/arrow_bottom.png`)}
@@ -86,9 +135,12 @@ export default function CreateItinerary() {
                       return (
                         <View style={{}}>
                           <CardSelectItinerary
+                            id={item.post_id}
                             name={item.title}
-                            description={"Nepal/Guru"}
+                            description={`${item.country}/${item.local}`}
                             image={item.image}
+                            isChecked={selected.includes(item.post_id)}
+                            setChecked={setSelectedData}
                           />
                         </View>
                       );
@@ -100,7 +152,7 @@ export default function CreateItinerary() {
           />
         </View>
       </ScrollView>
-      <FooterItinerary />
+      <FooterItinerary size={selected.length} action={createItinerary} />
     </View>
   );
 }

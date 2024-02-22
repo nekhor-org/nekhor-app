@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Carousel from "../components/Carousel";
 import { PostsData } from "../utils";
@@ -10,15 +10,47 @@ import HeaderApp from "../components/HeaderApp";
 import CardPost from "../components/CardPost";
 import HeaderBack from "../components/HeaderBack";
 import CardItinerary from "../components/CardItinerary";
-export default function ItineraryDetail() {
-  const [itineraries, setVisitedsData] = useState(PostsData);
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getHome, getPosts } from "../api";
+
+export default function ItineraryDetail({ navigation, route }) {
+  const id = route?.params?.id;
+  const [posts, setPosts] = useState([]);
+  const [itinerary, setItinerary] = useState(null);
+
+  const getItineraries = async () => {
+    const values = await AsyncStorage.getItem("itineraries");
+    if (values) {
+      const itinerary = JSON.parse(values).filter((item) => item.name === id);
+      if (itinerary) {
+        setItinerary(itinerary[0]);
+
+        query = "";
+        itinerary[0].posts.map((item) => {
+          query += `q[id_in][]=${item}&`;
+        });
+        const response = await getPosts(query);
+        setPosts(response.data);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getItineraries();
+  }, []);
+
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView>
-        <HeaderBack name="Itinerary example #21..." hasMenu />
+        <HeaderBack
+          name={id}
+          hasMenu
+          navigation={navigation}
+          onBack={() => navigation.onBack()}
+        />
         <View>
           <FlatList
-            data={itineraries}
+            data={posts}
             keyExtractor={(_, index) => String(index)}
             scrollEnabled={false}
             renderToHardwareTextureAndroid
@@ -32,7 +64,7 @@ export default function ItineraryDetail() {
                 <View style={{}}>
                   <CardItinerary
                     name={item.title}
-                    description={"Nepal/Guru"}
+                    description={`${item.country}/${item.local}`}
                     image={item.image}
                   />
                 </View>

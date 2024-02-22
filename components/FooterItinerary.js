@@ -13,7 +13,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { TouchableOpacity } from "react-native-gesture-handler";
 const { width } = Dimensions.get("screen");
 
-export default function FooterItinerary({ active = "explore" }) {
+export default function FooterItinerary({ size, action }) {
   return (
     <View style={styles.containerHeader}>
       <View
@@ -24,7 +24,7 @@ export default function FooterItinerary({ active = "explore" }) {
         }}
       >
         <TouchableOpacity
-          onPress={() => console.log("TESTE")}
+          onPress={() => action()}
           style={{
             width: "100%",
             alignItems: "center",
@@ -46,7 +46,7 @@ export default function FooterItinerary({ active = "explore" }) {
           <Text stlye={{ fontSize: 14, color: "black" }}>You selected</Text>
           <Text style={{ fontSize: 14, color: "#A67C00", fontWeight: 700 }}>
             {" "}
-            12 places
+            {size} places
           </Text>
         </View>
       </View>
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     padding: 16,
     width: "100%",
     backgroundColor: "white",
-    position: "fixed",
+    position: "absolute",
     bottom: 0,
     flexDirection: "row",
     justifyContent: "space-between",

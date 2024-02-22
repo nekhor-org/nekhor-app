@@ -11,6 +11,7 @@ import Posts from "./views/Posts";
 import PostDetail from "./views/PostDetail";
 import ItineraryDetail from "./views/ItineraryDetail";
 import CreateItinerary from "./views/CreateItinerary";
+import UpdateItinerary from "./views/UpdateItinerary";
 const Stack = createStackNavigator();
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { getMenus } from "./api";
@@ -57,6 +58,7 @@ export default function App() {
           <Stack.Screen name="Posts" component={Posts} />
           <Stack.Screen name="ItineraryDetail" component={ItineraryDetail} />
           <Stack.Screen name="CreateItinerary" component={CreateItinerary} />
+          <Stack.Screen name="UpdateItinerary" component={UpdateItinerary} />
           <Stack.Screen name="Itinerary" component={Itinerary} />
           <Stack.Screen name="Visiteds" component={Visiteds} />
           <Stack.Screen name="Favorites" component={Favorites} />

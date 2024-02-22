@@ -10,20 +10,23 @@ import {
   StyleSheet,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { TouchableOpacity } from "react-native-gesture-handler";
 const { width } = Dimensions.get("screen");
 
-export default function ListItinerary({ name, id }) {
+export default function ListItinerary({ name, id, navigate }) {
   return (
     <>
-      <View style={styles.textContainer}>
-        <Text style={{ color: "#A67C00", fontSize: 16, fontWeight: 700 }}>
-          {name}
-        </Text>
-        <Image
-          source={require(`../assets/arrow_left.png`)}
-          style={styles.menu}
-        />
-      </View>
+      <TouchableOpacity onPress={navigate}>
+        <View style={styles.textContainer}>
+          <Text style={{ color: "#A67C00", fontSize: 16, fontWeight: 700 }}>
+            {name}
+          </Text>
+          <Image
+            source={require(`../assets/arrow_left.png`)}
+            style={styles.menu}
+          />
+        </View>
+      </TouchableOpacity>
     </>
   );
 }
