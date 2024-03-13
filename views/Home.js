@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import Carousel from "../components/Carousel";
-import { DATA } from "../utils";
+import { DATA, getHomesDb } from "../utils";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import CardHome from "../components/CardHome";
 import { Categories } from "../utils";
@@ -22,20 +22,12 @@ export default function Home({ navigation }) {
   const [homePosts, setHomePosts] = useState([]);
 
   const getHomeData = async () => {
-    const response = await getHome();
-    // console.log(response);
-    setCategoriesData(response.data);
-  };
-
-  const getPostsHome = async () => {
-    const response = await getPosts("q[has_home_true]=true");
-
-    setHomePosts(response.data);
+    const response = await getHomesDb();
+    setCategoriesData(JSON.parse(response[0].content));
+    setHomePosts(JSON.parse(response[0].carousel));
   };
 
   useEffect(() => {
-    console.log("TESTE ", width);
-    getPostsHome();
     getHomeData();
   }, []);
 

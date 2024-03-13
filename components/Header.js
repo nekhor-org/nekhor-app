@@ -12,7 +12,7 @@ import {
 const { width } = Dimensions.get("screen");
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { getMenus } from "../api";
+import { getMenusDb } from "../utils";
 import withObservables from "@nozbe/with-observables";
 import { database } from "../model";
 function Header({ title, image, id, navigation }) {
@@ -20,8 +20,7 @@ function Header({ title, image, id, navigation }) {
   const [menus, setMenus] = React.useState([]);
 
   const getMenuData = async () => {
-    // const response = await getMenus();
-    const res = await database.get("locals").query();
+    const res = await getMenusDb();
     setMenus(res);
   };
   React.useEffect(() => {

@@ -58,6 +58,8 @@ export default function Favorites({ navigation }) {
               return (
                 <View style={{}}>
                   <CardPost
+                    id={item.post_id}
+                    navigation={navigation}
                     kind="heart"
                     title={item.title}
                     description={item.subtitle}

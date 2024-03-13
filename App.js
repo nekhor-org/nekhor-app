@@ -14,35 +14,13 @@ import CreateItinerary from "./views/CreateItinerary";
 import UpdateItinerary from "./views/UpdateItinerary";
 const Stack = createStackNavigator();
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
-import { getMenus } from "./api";
 import { database } from "./model";
+import { saveMenus } from "./utils";
+import Splash from "./views/Splash";
 
 export default function App() {
-  const getMenuDatas = async () => {
-    console.log("PEGANDO MENUS");
-    const response = await getMenus();
-    const res = await database.get("locals").query();
-    res.map(async (item) => {
-      await database.write(async () => {
-        await item.destroyPermanently();
-      });
-    });
-
-    response.data.map(async (item) => {
-      console.log(item.name);
-      const newPost = await database.write(async () => {
-        await database.get("locals").create((local) => {
-          local.id = item.id;
-          local.name = item.name;
-          local.localId = item.local_id;
-          local.languageId = item.language_id;
-        });
-      });
-    });
-  };
-
   useEffect(() => {
-    getMenuDatas();
+    saveMenus();
   }, []);
 
   return (
@@ -53,6 +31,7 @@ export default function App() {
             headerShown: false,
           }}
         >
+          <Stack.Screen name="Splash" component={Splash} />
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="PostDetail" component={PostDetail} />
           <Stack.Screen name="Posts" component={Posts} />

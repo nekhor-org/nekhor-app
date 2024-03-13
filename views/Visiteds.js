@@ -56,6 +56,8 @@ export default function Visiteds({ navigation }) {
                 <View style={{}}>
                   <CardPost
                     kind="map"
+                    id={item.post_id}
+                    navigation={navigation}
                     title={item.title}
                     description={item.subtitle}
                     image={item.image}
