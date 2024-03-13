@@ -6,6 +6,8 @@ import { Home } from "./Home";
 import { schema } from "./schema";
 import { Post } from "./Post";
 import { Country } from "./Country";
+import { Language } from "./Language";
+import { Itinerary } from "./Itinerary";
 
 const adapter = new SQLiteAdapter({
   schema,
@@ -14,5 +16,5 @@ const adapter = new SQLiteAdapter({
 
 export const database = new Database({
   adapter,
-  modelClasses: [Local, Home, Post, Country],
+  modelClasses: [Local, Home, Post, Country, Language, Itinerary],
 });

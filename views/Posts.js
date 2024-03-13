@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Carousel from "../components/Carousel";
-import { PostsData } from "../utils";
+import { PostsData, getCountriesDb, getPostDb } from "../utils";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import CardHome from "../components/CardHome";
 import Footer from "../components/Footer";
@@ -10,6 +10,7 @@ import HeaderApp from "../components/HeaderApp";
 import CardPost from "../components/CardPost";
 import HeaderBack from "../components/HeaderBack";
 import { getSubCategories, getPosts } from "../api";
+import { Q } from "@nozbe/watermelondb";
 export default function Posts({ navigation, route }) {
   const [categoryId, setCategoryId] = useState(route?.params?.id || 1);
   const [name, setName] = useState(route?.params?.name || "The Buddha");
@@ -18,15 +19,15 @@ export default function Posts({ navigation, route }) {
   const [countries, setCountries] = useState([]);
 
   const getCountryData = async () => {
-    const response = await getSubCategories(`q[local_id_eq]=${categoryId}`);
-    setCountries(response.data);
-    setSelected(response.data[0]);
-    getPostsData(response.data[0].country?.id);
+    const res = await getCountriesDb(Q.where("local_id", categoryId));
+    setCountries(res.map((item) => JSON.parse(item.content)));
+    setSelected(JSON.parse(res[0].content));
+    getPostsData(JSON.parse(res[0].content)?.country?.id);
   };
 
   const getPostsData = async (country_id) => {
-    const response = await getPosts(`q[country_id_eq]=${country_id}`);
-    setPostsData(response.data);
+    const res = await getPostDb(Q.where("country_id", country_id));
+    setPostsData(res.map((item) => JSON.parse(item.content)));
   };
 
   const selectCountry = async (select) => {

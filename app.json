@@ -1,14 +1,23 @@
 {
   "expo": {
-    "name": "nekhor-app",
+    "name": "Nekhor",
     "slug": "nekhor-app",
     "version": "1.0.0",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "splash": {
+      "image": "./assets/gold_seal.png",
+      "backgroundColor": "#00000"
+    },
+    "orientation": "portrait",
     "plugins": [
       [
         "@morrowdigital/watermelondb-expo-plugin",
         {
-          "databases": ["morrow.db"]
+          "databases": [
+            "morrow.db"
+          ]
         }
       ],
       [
@@ -19,6 +28,11 @@
           }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "1c5f5a5a-108b-49c7-952e-6f3bf8216459"
+      }
+    }
   }
 }

@@ -1,5 +1,15 @@
-import { api, getHome, getMenus, getPosts, getSubCategories } from "./api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  api,
+  getHome,
+  getLanguages,
+  getMenus,
+  getPosts,
+  getPostsItineraries,
+  getSubCategories,
+} from "./api";
 import { database } from "./model";
+import { Q } from "@nozbe/watermelondb";
 
 const USER_STORAGE_KEY = "user_nekhor_storage.v1";
 const TOKEN_STORAGE_KEY = "token_nekhor_storage.v1";
@@ -312,22 +322,29 @@ export const Countries = [
 ];
 
 export const getMenusDb = async () => {
-  return await database.get("locals").query();
+  const language = await getCurrentLanguage();
+  return await database
+    .get("locals")
+    .query(Q.where("language_id", language.id));
 };
 
 export const saveMenus = async () => {
   const res = await database.get("locals").query();
 
   if (res.length <= 0) {
-    const response = await getMenus();
+    const languages = await getLanguagesDb();
 
-    response.data.map(async (item) => {
-      const newPost = await database.write(async () => {
-        await database.get("locals").create((local) => {
-          local.id = item.id;
-          local.name = item.name;
-          local.localId = item.local_id;
-          local.languageId = item.language_id;
+    JSON.parse(languages[0].content).map(async (language) => {
+      const response = await getMenus(`?language_id=${language.id}`);
+
+      response.data.map(async (item) => {
+        const newPost = await database.write(async () => {
+          await database.get("locals").create((local) => {
+            local.myId = item.id;
+            local.name = item.name;
+            local.localId = item.local_id;
+            local.languageId = language.id;
+          });
         });
       });
     });
@@ -335,65 +352,148 @@ export const saveMenus = async () => {
 };
 
 export const getHomesDb = async () => {
-  return await database.get("homes").query();
+  const language = await getCurrentLanguage();
+  return await database
+    .get("homes")
+    .query(Q.where("language_id", language.id))
+    .fetch();
 };
 
 export const saveHome = async () => {
   const res = await database.get("homes").query();
-  const response = await getHome();
-  const responsePostHome = await getPosts("q[has_home_true]=true");
-  const newHome = await database.write(async () => {
-    await database.get("homes").create((home) => {
-      home.myId = 1;
-      home.content = JSON.stringify(response.data);
-      home.carousel = JSON.stringify(responsePostHome.data);
-      home.languageId = 1;
+  if (res.length <= 0) {
+    const languages = await getLanguagesDb();
+
+    JSON.parse(languages[0].content).map(async (language) => {
+      const response = await getHome(`?language_id=${language.id}`);
+      const responsePostHome = await getPosts(
+        `q[has_home_true]=true&language_id=${language.id}`
+      );
+      console.log(response);
+      console.log(responsePostHome);
+      const newHome = await database.write(async () => {
+        await database.get("homes").create((home) => {
+          home.myId = language.id;
+          home.content = JSON.stringify(response.data);
+          home.carousel = JSON.stringify(responsePostHome.data);
+          home.languageId = language.id;
+        });
+      });
     });
-  });
+  }
 };
 
-export const getCountriesDb = async () => {
-  return await database.get("countries").query();
+export const getItinerariesDb = async () => {
+  const language = await getCurrentLanguage();
+  return await database
+    .get("itineraries")
+    .query(Q.where("language_id", language.id));
+};
+
+export const saveItinerary = async () => {
+  const res = await database.get("itineraries").query();
+  if (res.length <= 0) {
+    const languages = await getLanguagesDb();
+    JSON.parse(languages[0].content).map(async (language) => {
+      const response = await getPostsItineraries(`?language_id=${language.id}`);
+      const newHome = await database.write(async () => {
+        await database.get("itineraries").create((home) => {
+          home.myId = language.id;
+          home.content = JSON.stringify(response.data);
+          home.languageId = language.id;
+        });
+      });
+    });
+  }
+};
+
+export const getLanguagesDb = async () => {
+  return await database.get("languages").query();
+};
+
+export const saveLanguage = async () => {
+  const res = await database.get("languages").query();
+  if (res.length <= 0) {
+    const response = await getLanguages();
+    const newlanguage = await database.write(async () => {
+      await database.get("languages").create((language) => {
+        language.content = JSON.stringify(response.data);
+      });
+    });
+  }
+};
+
+export const getCountriesDb = async (query) => {
+  if (query) {
+    return await database.get("countries").query(query).fetch();
+  }
+  const language = await getCurrentLanguage();
+  return await database
+    .get("countries")
+    .query(Q.where("language_id", language.id));
 };
 
 export const saveCountries = async () => {
   const res = await database.get("countries").query();
 
   if (res.length <= 0) {
-    const response = await getSubCategories();
-    response.data.map(async (item) => {
-      const newCountry = await database.write(async () => {
-        await database.get("countries").create((country) => {
-          country.myId = item.id;
-          country.localId = item.local_id;
-          country.content = JSON.stringify(item);
-          country.languageId = 1;
+    const languages = await getLanguagesDb();
+    JSON.parse(languages[0].content).map(async (language) => {
+      const response = await getSubCategories(`language_id=${language.id}`);
+      response.data.map(async (item) => {
+        const newCountry = await database.write(async () => {
+          await database.get("countries").create((country) => {
+            country.myId = item.id;
+            country.localId = item.local_id;
+            country.content = JSON.stringify(item);
+            country.languageId = language.id;
+          });
         });
       });
     });
   }
 };
 
-export const getPostDb = async () => {
-  return await database.get("posts").query();
+export const getPostDb = async (query) => {
+  const language = await getCurrentLanguage();
+  if (query) {
+    return await database
+      .get("posts")
+      .query(query, Q.where("language_id", language.id))
+      .fetch();
+  }
+
+  return await database.get("posts").query(Q.where("language_id", language.id));
 };
 
 export const savePosts = async () => {
   const res = await database.get("posts").query();
-  console.log("SALVANDO DADOS D AHOME", res);
   if (res.length <= 0) {
-    const response = await getPosts();
-    response.data.map(async (item) => {
-      const newPost = await database.write(async () => {
-        await database.get("posts").create((post) => {
-          post.myId = item.id;
-          post.content = JSON.stringify(item);
-          post.postId = item.post_id;
-          post.localId = item.local_id;
-          post.countryId = item.country_id;
-          post.languageId = 1;
+    const languages = await getLanguagesDb();
+    JSON.parse(languages[0].content).map(async (language) => {
+      const response = await getPosts(`language_id=${language.id}`);
+      response.data.map(async (item) => {
+        const newPost = await database.write(async () => {
+          await database.get("posts").create((post) => {
+            post.myId = item.id;
+            post.content = JSON.stringify(item);
+            post.postId = item.post_id;
+            post.localId = item.local_id;
+            post.countryId = item.country_id;
+            post.languageId = language.id;
+          });
         });
       });
     });
   }
+};
+
+export const getCurrentLanguage = async () => {
+  const language = await AsyncStorage.getItem("languageId");
+  if (language) {
+    console.log(language);
+    return JSON.parse(language);
+  }
+
+  return { id: 1, name: "English" };
 };

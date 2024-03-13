@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Carousel from "../components/Carousel";
-import { PostsData } from "../utils";
+import { PostsData, getPostDb } from "../utils";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import CardHome from "../components/CardHome";
 import Footer from "../components/Footer";
@@ -12,6 +12,7 @@ import HeaderBack from "../components/HeaderBack";
 import CardItinerary from "../components/CardItinerary";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getHome, getPosts } from "../api";
+import { Q } from "@nozbe/watermelondb";
 
 export default function ItineraryDetail({ navigation, route }) {
   const id = route?.params?.id;
@@ -25,12 +26,10 @@ export default function ItineraryDetail({ navigation, route }) {
       if (itinerary) {
         setItinerary(itinerary[0]);
 
-        query = "";
-        itinerary[0].posts.map((item) => {
-          query += `q[id_in][]=${item}&`;
-        });
-        const response = await getPosts(query);
-        setPosts(response.data);
+        const res = await getPostDb(
+          Q.where("post_id", Q.oneOf(itinerary[0].posts))
+        );
+        setPosts(res.map((item) => JSON.parse(item.content)));
       }
     }
   };
@@ -46,7 +45,7 @@ export default function ItineraryDetail({ navigation, route }) {
           name={id}
           hasMenu
           navigation={navigation}
-          onBack={() => navigation.onBack()}
+          onBack={() => console.log(navigation.goBack())}
         />
         <View>
           <FlatList

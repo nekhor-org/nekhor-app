@@ -19,10 +19,6 @@ import { saveMenus } from "./utils";
 import Splash from "./views/Splash";
 
 export default function App() {
-  useEffect(() => {
-    saveMenus();
-  }, []);
-
   return (
     <ActionSheetProvider>
       <NavigationContainer>

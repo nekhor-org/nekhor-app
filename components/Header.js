@@ -12,23 +12,33 @@ import {
 const { width } = Dimensions.get("screen");
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { getMenusDb } from "../utils";
+import { getLanguagesDb, getMenusDb } from "../utils";
 import withObservables from "@nozbe/with-observables";
 import { database } from "../model";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 function Header({ title, image, id, navigation }) {
   const { showActionSheetWithOptions } = useActionSheet();
   const [menus, setMenus] = React.useState([]);
+  const [languages, setLanguages] = React.useState([]);
 
   const getMenuData = async () => {
     const res = await getMenusDb();
+    console.log(res);
     setMenus(res);
+  };
+
+  const getLanguageData = async () => {
+    const res = await getLanguagesDb();
+    if (res && res[0]) {
+      setLanguages(JSON.parse(res[0].content));
+    }
   };
   React.useEffect(() => {
     getMenuData();
+    getLanguageData();
   }, [database]);
 
   const openMenu = () => {
-    console.log(menus);
     const options = menus.map((item) => item.name);
 
     showActionSheetWithOptions(
@@ -38,7 +48,6 @@ function Header({ title, image, id, navigation }) {
         titleTextStyle: { color: "black", fontSize: 24, fontWeight: 700 },
       },
       (selectedIndex) => {
-        console.log(menus[selectedIndex]);
         navigation.push("Posts", {
           id: menus[selectedIndex].localId,
           name: `${menus[selectedIndex].name}`,
@@ -49,7 +58,7 @@ function Header({ title, image, id, navigation }) {
   };
 
   const openSettings = () => {
-    const options = ["English", "Mandarin"];
+    const options = languages.map((item) => item.name);
 
     showActionSheetWithOptions(
       {
@@ -58,8 +67,11 @@ function Header({ title, image, id, navigation }) {
         title: "Configuration",
         titleTextStyle: { color: "black", fontSize: 24, fontWeight: 700 },
       },
-      (selectedIndex) => {
-        console.log(selectedIndex);
+      async (selectedIndex) => {
+        await AsyncStorage.setItem(
+          "languageId",
+          JSON.stringify(languages[selectedIndex])
+        );
       }
     );
   };

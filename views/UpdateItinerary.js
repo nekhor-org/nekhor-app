@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Carousel from "../components/Carousel";
-import { Countries } from "../utils";
+import { Countries, getItinerariesDb } from "../utils";
 import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
 import CardHome from "../components/CardHome";
 import Footer from "../components/Footer";
@@ -37,8 +37,10 @@ export default function UpdateItinerary({ navigation, route }) {
   };
 
   const getPostsData = async () => {
-    const response = await getPostsItineraries();
-    setPosts(response.data);
+    const res = await getItinerariesDb();
+    if (res && res[0]) {
+      setPosts(JSON.parse(res[0].content));
+    }
   };
 
   const setSelectedData = async (data) => {

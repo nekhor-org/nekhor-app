@@ -7,9 +7,10 @@ import {
   View,
   Image,
   useWindowDimensions,
+  ActivityIndicator,
 } from "react-native";
 import Carousel from "../components/Carousel";
-import { PostsData } from "../utils";
+import { PostsData, getPostDb } from "../utils";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import CardHome from "../components/CardHome";
 import Footer from "../components/Footer";
@@ -22,6 +23,7 @@ import FooterPost from "../components/FooterPost";
 import { IP_ADDRESS, getPost } from "../api";
 import RenderHTML from "react-native-render-html";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Q } from "@nozbe/watermelondb";
 
 export default function PostDetail({ navigation, route }) {
   const { width } = useWindowDimensions();
@@ -36,14 +38,19 @@ export default function PostDetail({ navigation, route }) {
   const [favorites, setFavorites] = useState([]);
   const [visited, setVisited] = useState(false);
   const [visiteds, setVisiteds] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const getPostData = async () => {
-    const response = await getPost(postId);
+    const res = await getPostDb(Q.where("post_id", postId));
+    if (res && res[0]) {
+      const response = JSON.parse(res[0].content);
+      setTitle(response?.title);
+      setSubtitle(response?.subtitle);
+      setLocal(response?.local);
+      setContent(response?.content);
+      setImage(`${IP_ADDRESS}${response?.image}`);
+    }
 
-    setTitle(response.data?.title);
-    setSubtitle(response.data?.subtitle);
-    setLocal(response.data?.local);
-    setContent(response.data?.content);
-    setImage(`${IP_ADDRESS}${response.data?.image}`);
+    setIsLoading(false);
   };
 
   const setVisitedData = async () => {
@@ -85,7 +92,6 @@ export default function PostDetail({ navigation, route }) {
         }
         return values;
       } else {
-        console.log(VAZIO);
         setVisited(false);
         setVisiteds([]);
       }
@@ -155,80 +161,88 @@ export default function PostDetail({ navigation, route }) {
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView style={{ marginBottom: 100 }}>
         <HeaderBack name={local} onBack={() => navigation.goBack()} />
-        <View>
-          <View style={styles.imageContainer}>
-            <Image
-              position="top"
-              backgroundPosition="top"
-              source={{
-                uri: image,
-              }}
-              style={styles.image}
-            />
-            <View style={styles.absoluteContainer}>
-              <TouchableOpacity
-                onPress={setFavoritedData}
-                style={
-                  favorited ? styles.iconContainerActive : styles.iconContainer
-                }
-              >
-                <Image
-                  source={require(`../assets/heart_active.png`)}
-                  style={styles.menu}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={setVisitedData}
-                style={
-                  visited ? styles.iconContainerActive : styles.iconContainer
-                }
-              >
-                <Image
-                  source={require(`../assets/map_active.png`)}
-                  style={styles.menu}
-                />
-              </TouchableOpacity>
+        {isLoading ? (
+          <View style={{ marginTop: 10 }}>
+            <ActivityIndicator size="large" />
+          </View>
+        ) : (
+          <View>
+            <View style={styles.imageContainer}>
+              <Image
+                position="top"
+                backgroundPosition="top"
+                source={{
+                  uri: image,
+                }}
+                style={styles.image}
+              />
+              <View style={styles.absoluteContainer}>
+                <TouchableOpacity
+                  onPress={setFavoritedData}
+                  style={
+                    favorited
+                      ? styles.iconContainerActive
+                      : styles.iconContainer
+                  }
+                >
+                  <Image
+                    source={require(`../assets/heart_active.png`)}
+                    style={styles.menu}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={setVisitedData}
+                  style={
+                    visited ? styles.iconContainerActive : styles.iconContainer
+                  }
+                >
+                  <Image
+                    source={require(`../assets/map_active.png`)}
+                    style={styles.menu}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-          <Text
-            style={{
-              color: "#A67C00",
-              textAlign: "center",
-              fontSize: 42,
-              marginVertical: 12,
-            }}
-          >
-            {title}
-          </Text>
-          <Text
-            style={{
-              color: "#000",
-              textAlign: "center",
-              fontSize: 20,
-              marginBottom: 12,
-            }}
-          >
-            {subtitle}
-          </Text>
-          <View style={{ alignItems: "center", marginVertical: 12 }}>
-            <View
+            <Text
               style={{
-                borderRadius: 10,
-                background: "#DEDEDE",
-                width: 77,
-                height: 5,
+                color: "#A67C00",
+                textAlign: "center",
+                fontSize: 42,
+                marginVertical: 12,
               }}
-            ></View>
+            >
+              {title}
+            </Text>
+            <Text
+              style={{
+                color: "#000",
+                textAlign: "center",
+                fontSize: 20,
+                marginBottom: 12,
+              }}
+            >
+              {subtitle}
+            </Text>
+            <View style={{ alignItems: "center", marginVertical: 12 }}>
+              <View
+                style={{
+                  borderRadius: 10,
+                  background: "#DEDEDE",
+                  width: 77,
+                  height: 5,
+                }}
+              ></View>
+            </View>
+            <SafeAreaView style={styles.webviewContainer}>
+              <RenderHTML contentWidth={width} source={{ html: content }} />
+              {/* <WebView
+                  style={{ width: "100%", height: 900, flex: 1 }}
+                  originWhitelist={["*"]}
+                  source={{ html: content }}
+                /> */}
+            </SafeAreaView>
           </View>
-          <SafeAreaView style={styles.webviewContainer}>
-            <RenderHTML contentWidth={width} source={{ html: content }} />
-            {/* <WebView
-              style={{ width: "100%", height: 900, flex: 1 }}
-              originWhitelist={["*"]}
-              source={{ html: content }}
-            /> */}
-          </SafeAreaView>
-        </View>
+        )}
       </ScrollView>
       <FooterPost />
     </View>

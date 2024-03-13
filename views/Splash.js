@@ -6,15 +6,22 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image,
+  ActivityIndicator,
 } from "react-native";
 import Carousel from "../components/Carousel";
 import {
   DATA,
   getCountriesDb,
+  getCurrentLanguage,
   getHomesDb,
+  getMenusDb,
   getPostDb,
   saveCountries,
   saveHome,
+  saveItinerary,
+  saveLanguage,
+  saveMenus,
   savePostHome,
   savePosts,
 } from "../utils";
@@ -31,23 +38,51 @@ export default function Splash({ navigation }) {
   const [homePosts, setHomePosts] = useState([]);
 
   const getHomeData = async () => {
-    const response = await getPostDb();
+    const response = await getHomesDb();
     console.log("GOME Q VEM DO BANCO");
     console.log(response);
   };
 
+  const saveData = async () => {
+    await saveLanguage();
+
+    setTimeout(async () => {
+      await saveMenus();
+      await saveHome();
+      await saveCountries();
+      await savePosts();
+      await saveItinerary();
+      navigation.replace("Home");
+    }, 1000);
+  };
+
   useEffect(() => {
-    // saveHome();
-    // saveCountries();
-    // savePosts();
+    saveData();
     getHomeData();
   }, []);
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#fff" }}>
-      <ScrollView>
-        <Text>Nekhor</Text>
-      </ScrollView>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#000",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Image
+        source={require(`../assets/gold_seal.png`)}
+        style={{
+          width: 200,
+          height: 200,
+        }}
+      />
+      <Text style={{ color: "#fff", marginTop: 12 }}>
+        Please wait we are preparing the data!
+      </Text>
+      <View style={{ marginTop: 10 }}>
+        <ActivityIndicator size="large" />
+      </View>
     </View>
   );
 }
