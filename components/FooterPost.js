@@ -24,7 +24,7 @@ export default function FooterPost({ active = "explore" }) {
           width: "100%",
         }}
       >
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => console.log("TESTE")}
           style={{
             width: 150,
@@ -36,7 +36,7 @@ export default function FooterPost({ active = "explore" }) {
           }}
         >
           <Text style={{ fontSize: 18, color: "white" }}>View in map</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => console.log("TESTE")}
           style={{

@@ -369,8 +369,7 @@ export const saveHome = async () => {
       const responsePostHome = await getPosts(
         `q[has_home_true]=true&language_id=${language.id}`
       );
-      console.log(response);
-      console.log(responsePostHome);
+      console.log("SALVANDO itinera", response?.data);
       const newHome = await database.write(async () => {
         await database.get("homes").create((home) => {
           home.myId = language.id;
@@ -396,6 +395,7 @@ export const saveItinerary = async () => {
     const languages = await getLanguagesDb();
     JSON.parse(languages[0].content).map(async (language) => {
       const response = await getPostsItineraries(`?language_id=${language.id}`);
+      console.log("SALVANDO itinera", response.data);
       const newHome = await database.write(async () => {
         await database.get("itineraries").create((home) => {
           home.myId = language.id;
@@ -415,6 +415,7 @@ export const saveLanguage = async () => {
   const res = await database.get("languages").query();
   if (res.length <= 0) {
     const response = await getLanguages();
+    console.log("SALVANDO LINAGUAGE", response?.data);
     const newlanguage = await database.write(async () => {
       await database.get("languages").create((language) => {
         language.content = JSON.stringify(response.data);
@@ -441,6 +442,7 @@ export const saveCountries = async () => {
     JSON.parse(languages[0].content).map(async (language) => {
       const response = await getSubCategories(`language_id=${language.id}`);
       response.data.map(async (item) => {
+        console.log("SALVANDO Countries", item);
         const newCountry = await database.write(async () => {
           await database.get("countries").create((country) => {
             country.myId = item.id;
@@ -473,6 +475,7 @@ export const savePosts = async () => {
     JSON.parse(languages[0].content).map(async (language) => {
       const response = await getPosts(`language_id=${language.id}`);
       response.data.map(async (item) => {
+        console.log("SALVANDO posts", item);
         const newPost = await database.write(async () => {
           await database.get("posts").create((post) => {
             post.myId = item.id;

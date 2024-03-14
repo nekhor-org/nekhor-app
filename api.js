@@ -2,12 +2,12 @@ import { create } from "apisauce";
 
 import axios from "axios";
 
-// export const IP_ADDRESS = "https://nekhor.camisetaredutoralpostural.com.br";
-// export const WS_ADDRESS = "ws://nekhor.camisetaredutoralpostural.com.br/cable";
-// export const IMAGE_ADDRESS = "https://nekhor.camisetaredutoralpostural.com.br";
-export const IP_ADDRESS = "http://192.168.100.40:3000";
-export const WS_ADDRESS = "ws://192.168.100.40:3000/cable";
-export const IMAGE_ADDRESS = "http://192.168.100.40:3000";
+export const IP_ADDRESS = "https://nekhor.camisetaredutoralpostural.com.br";
+export const WS_ADDRESS = "ws://nekhor.camisetaredutoralpostural.com.br/cable";
+export const IMAGE_ADDRESS = "https://nekhor.camisetaredutoralpostural.com.br";
+// export const IP_ADDRESS = "http://192.168.100.40:3000";
+// export const WS_ADDRESS = "ws://192.168.100.40:3000/cable";
+// export const IMAGE_ADDRESS = "http://192.168.100.40:3000";
 
 export const api = axios.create({
   baseURL: IP_ADDRESS,

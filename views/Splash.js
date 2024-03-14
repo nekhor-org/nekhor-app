@@ -46,14 +46,15 @@ export default function Splash({ navigation }) {
   const saveData = async () => {
     await saveLanguage();
 
-    setTimeout(async () => {
-      await saveMenus();
-      await saveHome();
-      await saveCountries();
-      await savePosts();
-      await saveItinerary();
+    await saveMenus();
+    await saveHome();
+    await saveCountries();
+    await savePosts();
+    await saveItinerary();
+
+    setTimeout(() => {
       navigation.replace("Home");
-    }, 1000);
+    }, 5000);
   };
 
   useEffect(() => {
