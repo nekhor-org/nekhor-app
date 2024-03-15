@@ -37,17 +37,17 @@ export default function Home({ navigation }) {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
-      <ScrollView>
-        <Header navigation={navigation} />
-        <View style={{ height: 340 }}>
-          {homePosts && <Carousel propsData={homePosts} />}
+      {isLoading ? (
+        <View style={{ marginTop: 10 }}>
+          <ActivityIndicator size="large" />
         </View>
-        <View>
-          {isLoading ? (
-            <View style={{ marginTop: 10 }}>
-              <ActivityIndicator size="large" />
-            </View>
-          ) : (
+      ) : (
+        <ScrollView>
+          <Header navigation={navigation} setIsLoading={setIsLoading} />
+          <View style={{ height: 340 }}>
+            {homePosts && <Carousel propsData={homePosts} />}
+          </View>
+          <View>
             <FlatList
               data={categoriesData}
               keyExtractor={(_, index) => String(index)}
@@ -127,9 +127,9 @@ export default function Home({ navigation }) {
                 );
               }}
             />
-          )}
-        </View>
-      </ScrollView>
+          </View>
+        </ScrollView>
+      )}
       <Footer navigation={navigation} />
     </View>
   );

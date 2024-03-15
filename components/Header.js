@@ -12,11 +12,20 @@ import {
 const { width } = Dimensions.get("screen");
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { getLanguagesDb, getMenusDb } from "../utils";
+import {
+  deleteCountriesDb,
+  deleteHomesDb,
+  deleteItinerariesDb,
+  deleteLanguagesDb,
+  deleteMenusDb,
+  deletePostDb,
+  getLanguagesDb,
+  getMenusDb,
+} from "../utils";
 import withObservables from "@nozbe/with-observables";
 import { database } from "../model";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-function Header({ title, image, id, navigation }) {
+function Header({ title, image, id, navigation, setIsLoading }) {
   const { showActionSheetWithOptions } = useActionSheet();
   const [menus, setMenus] = React.useState([]);
   const [languages, setLanguages] = React.useState([]);
@@ -39,20 +48,33 @@ function Header({ title, image, id, navigation }) {
   }, [database]);
 
   const openMenu = () => {
-    const options = menus.map((item) => item.name);
+    let options = menus.map((item) => item.name);
 
+    const newArray = ["Reload data", ...options];
     showActionSheetWithOptions(
       {
-        options,
+        options: newArray,
         title: "Menu",
         titleTextStyle: { color: "black", fontSize: 24, fontWeight: 700 },
       },
-      (selectedIndex) => {
-        navigation.push("Posts", {
-          id: menus[selectedIndex].localId,
-          name: `${menus[selectedIndex].name}`,
-        });
-        console.log(menus[selectedIndex]);
+      async (selectedIndex) => {
+        console.log(selectedIndex);
+        if (selectedIndex == 0) {
+          setIsLoading(true);
+          await deleteMenusDb();
+          await deleteHomesDb();
+          await deleteItinerariesDb();
+          await deleteLanguagesDb();
+          await deleteCountriesDb();
+          await deletePostDb();
+          setIsLoading(false);
+          navigation.push("Splash");
+        } else {
+          navigation.push("Posts", {
+            id: menus[selectedIndex].localId,
+            name: `${menus[selectedIndex].name}`,
+          });
+        }
       }
     );
   };
@@ -72,6 +94,7 @@ function Header({ title, image, id, navigation }) {
           "languageId",
           JSON.stringify(languages[selectedIndex])
         );
+        navigation.replace("Home");
       }
     );
   };

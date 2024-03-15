@@ -328,6 +328,16 @@ export const getMenusDb = async () => {
     .query(Q.where("language_id", language.id));
 };
 
+export const deleteMenusDb = async () => {
+  await database.write(async () => {
+    const menus = await database.get("locals").query();
+
+    menus.map(async (item) => {
+      await item.destroyPermanently();
+    });
+  });
+};
+
 export const saveMenus = async () => {
   const res = await database.get("locals").query();
 
@@ -357,6 +367,16 @@ export const getHomesDb = async () => {
     .get("homes")
     .query(Q.where("language_id", language.id))
     .fetch();
+};
+
+export const deleteHomesDb = async () => {
+  await database.write(async () => {
+    const homes = await database.get("homes").query();
+
+    homes.map(async (item) => {
+      await item.destroyPermanently();
+    });
+  });
 };
 
 export const saveHome = async () => {
@@ -389,6 +409,16 @@ export const getItinerariesDb = async () => {
     .query(Q.where("language_id", language.id));
 };
 
+export const deleteItinerariesDb = async () => {
+  await database.write(async () => {
+    const itineraries = await database.get("itineraries").query();
+
+    itineraries.map(async (item) => {
+      await item.destroyPermanently();
+    });
+  });
+};
+
 export const saveItinerary = async () => {
   const res = await database.get("itineraries").query();
   if (res.length <= 0) {
@@ -409,6 +439,16 @@ export const saveItinerary = async () => {
 
 export const getLanguagesDb = async () => {
   return await database.get("languages").query();
+};
+
+export const deleteLanguagesDb = async () => {
+  await database.write(async () => {
+    const languages = await database.get("languages").query();
+
+    languages.map(async (item) => {
+      await item.destroyPermanently();
+    });
+  });
 };
 
 export const saveLanguage = async () => {
@@ -432,6 +472,16 @@ export const getCountriesDb = async (query) => {
   return await database
     .get("countries")
     .query(Q.where("language_id", language.id));
+};
+
+export const deleteCountriesDb = async () => {
+  await database.write(async () => {
+    const countries = await database.get("countries").query();
+
+    countries.map(async (item) => {
+      await item.destroyPermanently();
+    });
+  });
 };
 
 export const saveCountries = async () => {
@@ -466,6 +516,16 @@ export const getPostDb = async (query) => {
   }
 
   return await database.get("posts").query(Q.where("language_id", language.id));
+};
+
+export const deletePostDb = async () => {
+  await database.write(async () => {
+    const posts = await database.get("posts").query();
+
+    posts.map(async (item) => {
+      await item.destroyPermanently();
+    });
+  });
 };
 
 export const savePosts = async () => {
