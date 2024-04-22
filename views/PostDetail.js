@@ -207,7 +207,7 @@ export default function PostDetail({ navigation, route }) {
                   }
                 >
                   <Image
-                    source={require(`../assets/map_active.png`)}
+                    source={require(`../assets/explore_active.png`)}
                     style={styles.menu}
                   />
                 </TouchableOpacity>
