@@ -17,6 +17,7 @@ import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { database } from "./model";
 import { saveMenus } from "./utils";
 import Splash from "./views/Splash";
+import Map from "./views/Map";
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
         >
           <Stack.Screen name="Splash" component={Splash} />
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Map" component={Map} />
           <Stack.Screen name="PostDetail" component={PostDetail} />
           <Stack.Screen name="Posts" component={Posts} />
           <Stack.Screen name="ItineraryDetail" component={ItineraryDetail} />

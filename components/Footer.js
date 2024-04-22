@@ -50,8 +50,8 @@ export default function Footer({ active = "explore", navigation }) {
           <Image
             source={
               active == "map"
-                ? require(`../assets/map_active.png`)
-                : require(`../assets/map.png`)
+                ? require(`../assets/map_active_1.png`)
+                : require(`../assets/map_1.png`)
             }
             style={styles.menuMap}
           />

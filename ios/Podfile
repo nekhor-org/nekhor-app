@@ -58,6 +58,8 @@ target 'nekhorapp' do
   )
 
   post_install do |installer|
+    $RNMapboxMaps.pre_install(installer)
+    
     react_native_post_install(
       installer,
       config[:reactNativePath],

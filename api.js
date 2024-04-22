@@ -41,3 +41,7 @@ export const getPosts = (params = "") => {
 export const getPost = (id, params = "") => {
   return api.get(`/api/posts/${id}${params}`);
 };
+
+export const getLatLng = () => {
+  return api.get(`/api/posts/get_lat_lng`);
+};

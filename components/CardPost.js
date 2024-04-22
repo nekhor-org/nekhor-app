@@ -45,9 +45,11 @@ export default function CardPost({
         )}
       </View>
       <View style={styles.textContainer}>
-        <Text style={{ color: "#717171", fontSize: 12, fontWeight: 400 }}>
-          {description}
-        </Text>
+        {description && (
+          <Text style={{ color: "#717171", fontSize: 12, fontWeight: 400 }}>
+            {description}
+          </Text>
+        )}
         <Text style={{ color: "#A67C00", fontSize: 22, fontWeight: 400 }}>
           {title}
         </Text>

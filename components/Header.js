@@ -101,13 +101,16 @@ function Header({ title, image, id, navigation, setIsLoading }) {
 
   return (
     <View style={styles.containerHeader}>
-      <Image source={require("../assets/logo.png")} style={styles.image} />
+      <Image source={require("../assets/logo_1.png")} style={styles.image} />
       <View style={styles.menuContainer}>
         <TouchableOpacity onPress={openMenu}>
-          <Image source={require("../assets/menu.png")} style={styles.menu} />
+          <Image source={require("../assets/menu_1.png")} style={styles.menu} />
         </TouchableOpacity>
         <TouchableOpacity onPress={openSettings}>
-          <Image source={require("../assets/config.png")} style={styles.menu} />
+          <Image
+            source={require("../assets/config_1.png")}
+            style={styles.menu}
+          />
         </TouchableOpacity>
       </View>
     </View>

@@ -50,6 +50,16 @@ export default function Home({ navigation }) {
           <View>
             <FlatList
               data={categoriesData}
+              ItemSeparatorComponent={
+                <View
+                  style={{
+                    marginTop: 12,
+                    backgroundColor: "#ccc",
+                    height: 1,
+                    flex: 1,
+                  }}
+                />
+              }
               keyExtractor={(_, index) => String(index)}
               scrollEnabled={false}
               renderToHardwareTextureAndroid

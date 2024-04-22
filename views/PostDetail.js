@@ -8,6 +8,8 @@ import {
   Image,
   useWindowDimensions,
   ActivityIndicator,
+  Share,
+  Platform,
 } from "react-native";
 import Carousel from "../components/Carousel";
 import { PostsData, getPostDb } from "../utils";
@@ -30,6 +32,8 @@ export default function PostDetail({ navigation, route }) {
   const postId = route?.params?.id;
   // const postId = 8;
   const [title, setTitle] = useState("");
+  const [lat, setLat] = useState("");
+  const [lng, setLng] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [local, setLocal] = useState("");
   const [image, setImage] = useState("");
@@ -43,6 +47,8 @@ export default function PostDetail({ navigation, route }) {
     const res = await getPostDb(Q.where("post_id", postId));
     if (res && res[0]) {
       const response = JSON.parse(res[0].content);
+      setLat(response?.lat);
+      setLng(response?.lng);
       setTitle(response?.title);
       setSubtitle(response?.subtitle);
       setLocal(response?.local);
@@ -51,6 +57,10 @@ export default function PostDetail({ navigation, route }) {
     }
 
     setIsLoading(false);
+  };
+
+  const changePage = () => {
+    navigation.push("Map", { lat: lat, lng: lng, name: title });
   };
 
   const setVisitedData = async () => {
@@ -244,7 +254,19 @@ export default function PostDetail({ navigation, route }) {
           </View>
         )}
       </ScrollView>
-      <FooterPost />
+      <FooterPost
+        share={async () =>
+          await Share.share({
+            message: `Nekhor app: Buddha Shakyamuni and Guru Rinpoche sacred places ${
+              Platform.OS === "ios"
+                ? "https://apps.apple.com/us/app/nekhor/id1495713473"
+                : "https://play.google.com/store/apps/details?id=com.cavernalabs.nekhor"
+            } `,
+          })
+        }
+        changeMap={() => changePage()}
+        hasMap={lat && lng}
+      />
     </View>
   );
 }

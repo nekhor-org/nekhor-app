@@ -13,7 +13,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { TouchableOpacity } from "react-native-gesture-handler";
 const { width } = Dimensions.get("screen");
 
-export default function FooterPost({ active = "explore" }) {
+export default function FooterPost({ changeMap, share, hasMap }) {
   return (
     <View style={styles.containerHeader}>
       <View
@@ -24,21 +24,23 @@ export default function FooterPost({ active = "explore" }) {
           width: "100%",
         }}
       >
-        {/* <TouchableOpacity
-          onPress={() => console.log("TESTE")}
-          style={{
-            width: 150,
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 52,
-            padding: 16,
-            backgroundColor: "#A67C00",
-          }}
-        >
-          <Text style={{ fontSize: 18, color: "white" }}>View in map</Text>
-        </TouchableOpacity> */}
+        {hasMap && (
+          <TouchableOpacity
+            onPress={changeMap}
+            style={{
+              width: 150,
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 52,
+              padding: 16,
+              backgroundColor: "#A67C00",
+            }}
+          >
+            <Text style={{ fontSize: 18, color: "white" }}>View in map</Text>
+          </TouchableOpacity>
+        )}
         <TouchableOpacity
-          onPress={() => console.log("TESTE")}
+          onPress={share}
           style={{
             width: 150,
             alignItems: "center",

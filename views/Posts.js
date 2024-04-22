@@ -92,13 +92,22 @@ export default function Posts({ navigation, route }) {
             scrollEnabled={false}
             renderToHardwareTextureAndroid
             removeClippedSubviews={false}
+            ItemSeparatorComponent={
+              <View
+                style={{
+                  backgroundColor: "#ccc",
+                  height: 1,
+                  flex: 1,
+                }}
+              />
+            }
             contentContainerStyle={{
               justifyContent: "start",
               padding: 16,
             }}
             renderItem={({ item, index }) => {
               return (
-                <View style={{}}>
+                <View style={{ marginTop: 24 }}>
                   <CardPost
                     id={item.post_id}
                     title={item.title}
