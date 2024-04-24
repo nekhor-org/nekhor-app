@@ -63,6 +63,19 @@ export default function Footer({ active = "explore", navigation }) {
           <Image
             source={
               active == "location"
+                ? require(`../assets/itinerary1_active.png`)
+                : require(`../assets/itinerary1.png`)
+            }
+            style={styles.menu}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.push("Map")}
+          style={active == "map" ? styles.menuItemActive : styles.menuItem}
+        >
+          <Image
+            source={
+              active == "map"
                 ? require(`../assets/location_active.png`)
                 : require(`../assets/location.png`)
             }
@@ -107,9 +120,9 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   menuItem: {
-    width: 85,
+    width: 60,
     zIndex: 10,
-    height: 85,
+    height: 60,
     backgroundColor: "#fff",
     borderRadius: 9999,
     justifyContent: "center",
@@ -117,9 +130,9 @@ const styles = StyleSheet.create({
   },
 
   menuItemActive: {
-    width: 85,
+    width: 60,
     zIndex: 10,
-    height: 85,
+    height: 60,
     borderRadius: 9999,
     justifyContent: "center",
     alignItems: "center",
@@ -132,8 +145,8 @@ const styles = StyleSheet.create({
     objectFit: "cover",
   },
   menuMap: {
-    height: 48,
-    width: 36,
+    height: 32,
+    width: 24,
     marginHorizontal: 4,
     objectFit: "cover",
   },
