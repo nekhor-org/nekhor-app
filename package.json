@@ -12,7 +12,7 @@
     "@expo/react-native-action-sheet": "^4.0.1",
     "@expo/webpack-config": "^19.0.0",
     "@morrowdigital/watermelondb-expo-plugin": "^2.1.2",
-    "@nozbe/watermelondb": "^0.26.0",
+    "@nozbe/watermelondb": "^0.27.1",
     "@nozbe/with-observables": "^1.6.0",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-navigation/native": "^6.1.9",

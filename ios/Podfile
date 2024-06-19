@@ -37,7 +37,7 @@ elsif podfile_properties.key?('ios.flipper') then
   end
 end
 
-target 'nekhorapp' do
+target 'Nekhor' do
   use_expo_modules!
   config = use_native_modules!
 
@@ -57,9 +57,11 @@ target 'nekhorapp' do
     :flipper_configuration => flipper_config
   )
 
+  
+
+  pod 'simdjson', path: File.join(File.dirname(`node --print "require.resolve('@nozbe/simdjson/package.json')"`)), :modular_headers => true 
+
   post_install do |installer|
-    $RNMapboxMaps.pre_install(installer)
-    
     react_native_post_install(
       installer,
       config[:reactNativePath],
